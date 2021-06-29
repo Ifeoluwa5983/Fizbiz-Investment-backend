@@ -1,0 +1,122 @@
+package com.fizbiz.backend.controller;
+
+import com.fizbiz.backend.dto.ChangePasswordDto;
+import com.fizbiz.backend.dto.RequestResetPasswordDto;
+import com.fizbiz.backend.dto.ResetPasswordDto;
+import com.fizbiz.backend.exception.FizbizException;
+import com.fizbiz.backend.exception.GeneralExceptionHandler;
+import com.fizbiz.backend.models.ApplicationUser;
+import com.fizbiz.backend.response.ResponseDetails;
+import com.fizbiz.backend.services.ApplicationUserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/user")
+public class ApplicationUserController {
+
+    @Autowired
+    ApplicationUserServiceImpl applicationUserService;
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody ApplicationUser applicationUser, HttpServletRequest httpServletRequest) throws FizbizException {
+        ApplicationUser user = applicationUserService.findApplicationUserByEmail(applicationUser.getEmailAddress());
+        if (user == null) {
+            String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
+            applicationUserService.registerApplicationUser(applicationUser, url);
+        } else {
+            throw new FizbizException("User with that email address already exist");
+        }
+        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Your account has been created successfully", HttpStatus.OK.toString());
+
+        return ResponseEntity.status(200).body(responseDetails);
+    }
+
+
+    @PostMapping ("/request-password-reset")
+    public ResponseEntity<?> RequestPasswordReset(@Valid @RequestBody RequestResetPasswordDto resetPasswordDto, HttpServletRequest httpServletRequest) throws  FizbizException {
+        String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
+        applicationUserService.sendResetPasswordToken(resetPasswordDto.getEmailAddress(), url);
+        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "An email has been sent to you , reset your password", "success");
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordDto resetPasswordDto, HttpServletRequest httpServletRequest) throws FizbizException {
+        String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
+        applicationUserService.resetPassword(resetPasswordDto.getToken(), resetPasswordDto.getPassword(), url);
+        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Password have been changed successfully", "success");
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordDto changePasswordDto) throws FizbizException {
+        applicationUserService.changePassword(changePasswordDto);
+        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Password have been changed successfully", "success");
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
+    }
+
+    @GetMapping("/verify/{email}")
+    public ResponseEntity<?> verifyUser(@PathVariable String email, HttpServletRequest httpServletRequest , WebRequest request) {
+        String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
+        try{
+            applicationUserService.verifyEmailToken(email, url);
+            ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "User confirmation successful", "success");
+            return new ResponseEntity<>(responseDetails, HttpStatus.OK);
+        }
+        catch (FizbizException e){
+            return new GeneralExceptionHandler().handleGlobalException(e, request);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findUserById(@PathVariable String id) throws FizbizException {
+        if (applicationUserService.procurementPartyDoesNotExist(id)){
+            throw new FizbizException("User with that id does not exist");
+        }
+        ApplicationUser user = applicationUserService.findApplicationUserById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/")
+//    @PreAuthorize("hasAnyRole('ADMIN, SUPER_ADMIN')")
+    public ResponseEntity<?> findAllUsers() {
+        List<ApplicationUser> users = applicationUserService.findAllApplicationUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody ApplicationUser applicationUser) throws FizbizException {
+        if (applicationUser.getId() == null) {
+            throw new FizbizException("User id cannot be null");
+        }
+        if (applicationUserService.procurementPartyDoesNotExist(applicationUser.getId())){
+            throw new FizbizException("User with that id does not exist");
+        }
+        applicationUserService.updateApplicationUser(applicationUser);
+        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "User account updated successfully", "success");
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/deactivate/{id}")
+    public ResponseEntity<?> deactivateUser(@PathVariable String id) throws FizbizException {
+        if (applicationUserService.procurementPartyDoesNotExist(id)){
+            throw new FizbizException("User with that id does not exist");
+        }
+        applicationUserService.deactivateApplicationUserById(id);
+        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "User account deactivated successfully", "success");
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
+    }
+
+}
+

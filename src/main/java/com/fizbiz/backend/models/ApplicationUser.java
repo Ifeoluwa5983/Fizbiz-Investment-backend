@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Document
 @Data
@@ -27,9 +28,19 @@ public class ApplicationUser {
 
     private double totalBalance;
 
-    private Boolean overallCapital;
+    private double overallCapital;
 
     private String homeAddress;
 
+    private String token;
+
     private Role role;
+
+    private String modifiedDate;
+
+    private String registeredDate;
+
+    private Boolean isActive;
+
+    private Boolean isVerified;
 }
