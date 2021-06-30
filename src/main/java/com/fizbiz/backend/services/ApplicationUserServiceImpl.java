@@ -6,6 +6,7 @@ import com.fizbiz.backend.models.ApplicationUser;
 import com.fizbiz.backend.models.Role;
 import com.fizbiz.backend.notification.EmailSenderServiceImpl;
 import com.fizbiz.backend.repositories.ApplicationUserRepository;
+import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 
+@Slf4j
 @Service
 public class ApplicationUserServiceImpl implements ApplicationUserService{
 
@@ -40,9 +42,9 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
     @Override
     public void registerApplicationUser(ApplicationUser applicationUser, String url) throws FizbizException {
         ApplicationUser user = applicationUserRepository.findByToken(applicationUser.getToken());
-//        if (user == null) {
-//            throw new FizbizException("User does not exist");
-//        }
+        if (user == null) {
+            throw new FizbizException("User does not exist");
+        }
         user.setRole(Role.USER);
         user.setModifiedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")));
         user.setPassword(encryptPassword(applicationUser.getPassword()));
@@ -56,23 +58,23 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
         user.setOverallCapital(0.0);
         user.setFirstName(applicationUser.getFirstName());
         user.setFirstName(applicationUser.getLastName());
-        applicationUserRepository.save(applicationUser);
+        applicationUserRepository.save(user);
         sendConfirmationEmail(user, url);
     }
     @Override
     public String verifyEmailToken(String email, String url) throws FizbizException {
+
         String verificationToken = String.format("%04d", random.nextInt(10000));
-        ApplicationUser procurementParty = applicationUserRepository.findByEmailAddress(email);
-        if (procurementParty != null) {
+        if (applicationUserRepository.findByEmailAddress(email) != null) {
             throw new FizbizException("User already exist");
-        } else if (procurementParty.getIsVerified()) {
-            throw new FizbizException("User has been verified");
         }
-        procurementParty.setToken(verificationToken);
-        procurementParty.setEmailAddress(email);
-        sendVerificationEmail(procurementParty, url);
-        applicationUserRepository.save(procurementParty);
-        return  procurementParty.getToken();
+
+        ApplicationUser user = new ApplicationUser();
+        user.setToken(verificationToken);
+        user.setEmailAddress(email);
+        sendVerificationEmail(user, verificationToken, url);
+        applicationUserRepository.save(user);
+        return  user.getToken();
     }
 
     public void changePassword(ChangePasswordDto changePasswordDto) throws FizbizException {
@@ -205,7 +207,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
         return bCryptPasswordEncoder.encode(password);
     }
 
-    private void sendVerificationEmail(ApplicationUser applicationUser, String siteURL) throws FizbizException {
+    private void sendVerificationEmail(ApplicationUser applicationUser, String code, String siteURL) throws FizbizException {
 
         String toAddress = applicationUser.getEmailAddress();
         String fromAddress = "o.ifeoluwah@gmail.com@gmail.com";
@@ -215,7 +217,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
 
         Context context = new Context();
         context.setVariable("name", applicationUser.getFirstName());
-        context.setVariable("link", verifyURL);
+        context.setVariable("code", code);
 
 
         String content = templateEngine.process("welcome", context);
@@ -228,7 +230,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
         String toAddress = applicationUser.getEmailAddress();
         String fromAddress = "o.ifeoluwah@gmail.com";
         String senderName = "Fizbiz";
-        String subject = "Welcome to Fizbiz Investment Platform";
+        String subject = "Welcome to Fikziz Investment Platform";
         String verifyURL = siteURL + "/verify?token=" + applicationUser.getToken();
 
         Context context = new Context();

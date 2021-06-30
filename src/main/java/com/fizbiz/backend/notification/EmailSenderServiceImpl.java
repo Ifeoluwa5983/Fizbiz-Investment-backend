@@ -23,6 +23,7 @@ public class EmailSenderServiceImpl implements NotificationService {
     @Async
     public void sendNotification( String fromAddress, String senderName, String toAddress, String subject, String redirectLink, String content) throws FizbizException {
         Properties mailProp = mailSender.getJavaMailProperties();
+        mailProp.setProperty("mail.mime.address.strict", "false");
         mailProp.put("mail.transport.protocol", "smtp");
         mailProp.put("mail.smtp.auth", "true");
         mailProp.put("mail.smtp.starttls.enable", "true");

@@ -12,6 +12,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.mail.internet.InternetAddress;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -39,7 +41,7 @@ class ApplicationUserControllerTest {
 
         applicationUser.setFirstName("Ife");
         applicationUser.setLastName("Femi");
-        applicationUser.setEmailAddress("o.ifeoluwah@gmail.com");
+        applicationUser.setToken("6643");
         applicationUser.setGender(Gender.Male);
         applicationUser.setPassword("password");
         applicationUser.setPhoneNumber("08033995588");
@@ -126,7 +128,12 @@ class ApplicationUserControllerTest {
     @Test
     void testThatUserCanCanBeVerified () throws Exception {
 
-        this.mockMvc.perform(get("/api/user/verify/o.ifeoluwah@gmail.com"))
+        InternetAddress address = new InternetAddress();
+        address.setAddress("o.ifeoluwah@gmail.com");
+
+        this.mockMvc.perform(post("/api/user/verify")
+                .contentType("application/json")
+                .content(mapper.writeValueAsString(address.toString())))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();

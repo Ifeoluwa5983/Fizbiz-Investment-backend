@@ -8,6 +8,7 @@ import com.fizbiz.backend.exception.GeneralExceptionHandler;
 import com.fizbiz.backend.models.ApplicationUser;
 import com.fizbiz.backend.response.ResponseDetails;
 import com.fizbiz.backend.services.ApplicationUserServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/user")
 public class ApplicationUserController {
@@ -65,9 +67,10 @@ public class ApplicationUserController {
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
-    @GetMapping("/verify/{email}")
-    public ResponseEntity<?> verifyUser(@PathVariable String email, HttpServletRequest httpServletRequest , WebRequest request) {
+    @PostMapping("/verify")
+    public ResponseEntity<?> verifyUser(@Valid @RequestBody String email, HttpServletRequest httpServletRequest , WebRequest request) {
         String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
+
         try{
             applicationUserService.verifyEmailToken(email, url);
             ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "User confirmation successful", "success");
