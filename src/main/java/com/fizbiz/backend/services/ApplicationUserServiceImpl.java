@@ -43,7 +43,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
     public void registerApplicationUser(ApplicationUser applicationUser, String url) throws FizbizException {
         ApplicationUser user = applicationUserRepository.findByToken(applicationUser.getToken());
         if (user == null) {
-            throw new FizbizException("User does not exist");
+            throw new FizbizException("Invalid request. Please try again later");
         }
         user.setRole(Role.USER);
         user.setModifiedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")));

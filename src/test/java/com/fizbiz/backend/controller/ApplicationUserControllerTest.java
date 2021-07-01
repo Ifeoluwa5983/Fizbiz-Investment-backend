@@ -41,7 +41,7 @@ class ApplicationUserControllerTest {
 
         applicationUser.setFirstName("Ife");
         applicationUser.setLastName("Femi");
-        applicationUser.setToken("6643");
+        applicationUser.setToken("3853");
         applicationUser.setGender(Gender.Male);
         applicationUser.setPassword("password");
         applicationUser.setPhoneNumber("08033995588");
