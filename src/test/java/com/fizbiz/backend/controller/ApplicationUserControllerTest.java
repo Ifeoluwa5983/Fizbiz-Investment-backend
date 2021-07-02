@@ -128,12 +128,14 @@ class ApplicationUserControllerTest {
     @Test
     void testThatUserCanCanBeVerified () throws Exception {
 
-        InternetAddress address = new InternetAddress();
-        address.setAddress("o.ifeoluwah@gmail.com");
+//        InternetAddress address = new InternetAddress();
+//        address.setAddress("o.ifeoluwah@gmail.com");
+
+        String email = "o.ifeoluwah@gmail.com";
 
         this.mockMvc.perform(post("/api/user/verify")
                 .contentType("application/json")
-                .content(mapper.writeValueAsString(address.toString())))
+                .content(mapper.writeValueAsString(email)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
