@@ -43,11 +43,12 @@ public class EmailSenderServiceImpl implements NotificationService {
             helper.setSubject(subject);
             helper.setText(content, true);
 
-        } catch (UnsupportedEncodingException ex){
+        } catch (UnsupportedEncodingException | MessagingException ex) {
             throw new FizbizException("There is a problem with the encoding of your message", ex);
-        } catch (MessagingException ex){
-            throw new FizbizException("There is a problem with your message", ex);
         }
+//        } catch (MessagingException ex){
+//            throw new FizbizException("There is a problem with your message", ex);
+//        }
         mailSender.setUsername(USERNAME);
         mailSender.setPassword(PASSWORD);
         mailSender.send(mimeMessage);
