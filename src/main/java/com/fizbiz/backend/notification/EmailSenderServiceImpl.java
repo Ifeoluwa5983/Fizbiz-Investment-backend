@@ -32,6 +32,7 @@ public class EmailSenderServiceImpl implements NotificationService {
         mailProp.put("mail.smtp.ssl.enable", "true");
         mailProp.put("mail.host", "smtp.gmail.com");
         mailProp.put("mail.port", 465);
+        mailProp.put("mail.default-encoding", "UTF-8");
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
