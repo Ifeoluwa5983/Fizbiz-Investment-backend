@@ -1,5 +1,6 @@
 package com.fizbiz.backend.services;
 
+import com.fizbiz.backend.dto.UserVerificationDto;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.models.ApplicationUser;
 
@@ -9,7 +10,7 @@ public interface ApplicationUserService {
 
     void registerApplicationUser(ApplicationUser applicationUser, String url) throws FizbizException;
 
-    String verifyEmailToken(String verificationToken, String url) throws FizbizException;
+    String verifyEmailToken(UserVerificationDto email, String url) throws FizbizException;
 
     void sendResetPasswordToken(String email, String url) throws FizbizException;
 

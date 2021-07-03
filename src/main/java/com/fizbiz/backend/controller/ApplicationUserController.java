@@ -3,6 +3,7 @@ package com.fizbiz.backend.controller;
 import com.fizbiz.backend.dto.ChangePasswordDto;
 import com.fizbiz.backend.dto.RequestResetPasswordDto;
 import com.fizbiz.backend.dto.ResetPasswordDto;
+import com.fizbiz.backend.dto.UserVerificationDto;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.exception.GeneralExceptionHandler;
 import com.fizbiz.backend.models.ApplicationUser;
@@ -68,7 +69,7 @@ public class ApplicationUserController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<?> verifyUser(@Valid @RequestBody String email, HttpServletRequest httpServletRequest , WebRequest request) {
+    public ResponseEntity<?> verifyUser(@Valid @RequestBody UserVerificationDto email, HttpServletRequest httpServletRequest , WebRequest request) {
         String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
 
         try{

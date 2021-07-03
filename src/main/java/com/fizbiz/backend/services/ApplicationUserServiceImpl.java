@@ -1,6 +1,7 @@
 package com.fizbiz.backend.services;
 
 import com.fizbiz.backend.dto.ChangePasswordDto;
+import com.fizbiz.backend.dto.UserVerificationDto;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.models.ApplicationUser;
 import com.fizbiz.backend.models.Role;
@@ -62,19 +63,18 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
         sendConfirmationEmail(user, url);
     }
     @Override
-    public String verifyEmailToken(String email, String url) throws FizbizException {
+    public String verifyEmailToken(UserVerificationDto email, String url) throws FizbizException {
 
         String verificationToken = String.format("%04d", random.nextInt(10000));
-        ApplicationUser optional = applicationUserRepository.findByEmailAddress(email);
+        ApplicationUser optional = applicationUserRepository.findByEmailAddress(email.getEmail());
         log.info("" + optional);
         if (optional != null) {
-            log.info("it was not equal to null");
             throw new FizbizException("User already exist");
         }
-        log.info("it was equal to null");
+
         ApplicationUser user = new ApplicationUser();
         user.setToken(verificationToken);
-        user.setEmailAddress(email);
+        user.setEmailAddress(email.getEmail());
         sendVerificationEmail(user, verificationToken, url);
         applicationUserRepository.save(user);
         return  user.getToken();
