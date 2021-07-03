@@ -1,23 +1,19 @@
 package com.fizbiz.backend.notification;
 
 import com.fizbiz.backend.exception.FizbizException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.thymeleaf.TemplateEngine;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 public class EmailSenderServiceImpl implements NotificationService {
 
     private static final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
-    private final static String USERNAME = "o.ifeoluwah@gmail.com";
-    private final static String PASSWORD = "uwafe5983";
+    private final static String USERNAME = "";
+    private final static String PASSWORD = "";
 
     @Override
     @Async
