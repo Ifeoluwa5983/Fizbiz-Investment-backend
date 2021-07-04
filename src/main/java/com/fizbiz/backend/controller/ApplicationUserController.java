@@ -8,6 +8,7 @@ import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.exception.GeneralExceptionHandler;
 import com.fizbiz.backend.models.ApplicationUser;
 import com.fizbiz.backend.response.ResponseDetails;
+import com.fizbiz.backend.response.ResponseDetailsWithObject;
 import com.fizbiz.backend.services.ApplicationUserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,8 +74,8 @@ public class ApplicationUserController {
         String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
 
         try{
-            applicationUserService.verifyEmailToken(email, url);
-            ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "User confirmation successful", "success");
+            String response = applicationUserService.verifyEmailToken(email, url);
+            ResponseDetailsWithObject responseDetails = new ResponseDetailsWithObject(LocalDateTime.now(), "User confirmation successful", response, "/api/user/verify");
             return new ResponseEntity<>(responseDetails, HttpStatus.OK);
         }
         catch (FizbizException e){
