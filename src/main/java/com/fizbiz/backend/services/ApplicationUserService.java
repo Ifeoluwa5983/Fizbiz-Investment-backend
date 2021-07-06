@@ -1,5 +1,6 @@
 package com.fizbiz.backend.services;
 
+import com.fizbiz.backend.dto.SetPinDto;
 import com.fizbiz.backend.dto.UserVerificationDto;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.models.ApplicationUser;
@@ -25,4 +26,6 @@ public interface ApplicationUserService {
     List<ApplicationUser> findAllApplicationUsers();
 
     void updateApplicationUser(ApplicationUser applicationUser) throws FizbizException;
+
+    void setPin(SetPinDto setPinDto) throws FizbizException;
 }

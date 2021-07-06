@@ -16,6 +16,8 @@ public class ApplicationUser {
 
     private String lastName;
 
+    private String pin;
+
     private String emailAddress;
 
     private String phoneNumber;

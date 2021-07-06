@@ -1,9 +1,6 @@
 package com.fizbiz.backend.controller;
 
-import com.fizbiz.backend.dto.ChangePasswordDto;
-import com.fizbiz.backend.dto.RequestResetPasswordDto;
-import com.fizbiz.backend.dto.ResetPasswordDto;
-import com.fizbiz.backend.dto.UserVerificationDto;
+import com.fizbiz.backend.dto.*;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.exception.GeneralExceptionHandler;
 import com.fizbiz.backend.models.ApplicationUser;
@@ -43,6 +40,13 @@ public class ApplicationUserController {
         ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Your account has been created successfully", HttpStatus.OK.toString());
 
         return ResponseEntity.status(200).body(responseDetails);
+    }
+
+    @PostMapping("/set-pin")
+    public ResponseEntity<?> setPin(@Valid @RequestBody SetPinDto setPinDto) throws FizbizException {
+        applicationUserService.setPin(setPinDto);
+        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Pin has been set successfully", "success");
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
 

@@ -1,6 +1,7 @@
 package com.fizbiz.backend.services;
 
 import com.fizbiz.backend.dto.ChangePasswordDto;
+import com.fizbiz.backend.dto.SetPinDto;
 import com.fizbiz.backend.dto.UserVerificationDto;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.models.ApplicationUser;
@@ -203,6 +204,16 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
 
         existingUser.setModifiedDate(LocalDateTime.now().toString());
         applicationUserRepository.save(existingUser);
+    }
+
+    @Override
+    public void setPin(SetPinDto setPinDto) throws FizbizException {
+        if (!applicationUserRepository.existsById(setPinDto.getUserId())){
+            throw new FizbizException("Application user with that id does not exist");
+        }
+        ApplicationUser user = applicationUserRepository.findById(setPinDto.getUserId()).get();
+        user.setPin(setPinDto.getPin());
+        applicationUserRepository.save(user);
     }
 
     private String encryptPassword(String password) {

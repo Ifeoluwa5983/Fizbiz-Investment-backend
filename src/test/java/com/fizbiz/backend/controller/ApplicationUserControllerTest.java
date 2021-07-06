@@ -3,6 +3,7 @@ package com.fizbiz.backend.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fizbiz.backend.dto.ChangePasswordDto;
 import com.fizbiz.backend.dto.LoginDto;
+import com.fizbiz.backend.dto.SetPinDto;
 import com.fizbiz.backend.models.ApplicationUser;
 import com.fizbiz.backend.models.Gender;
 import org.junit.jupiter.api.BeforeEach;
@@ -102,6 +103,23 @@ class ApplicationUserControllerTest {
                 .andReturn();
 
     }
+
+    @Test
+    void testThatWeCanCallUSetPinEndpoint() throws Exception {
+        SetPinDto setPinDto = new SetPinDto();
+        setPinDto.setUserId("60e1ab775624d85de263ff05");
+        setPinDto.setPin("1234");
+
+        this.mockMvc.perform(post("/api/user/set-pin")
+                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sd2FoQGdtYWlsLmNvbSIsImV4cCI6MTYyNTgyMjc2N30.0ZsEjXeYxTrfW4yF6qCU9ng8Qil4JCWOvcATo_HLDvIJnxKVQNZ81X-i72MV2fK_KNQBFthlV50idGLZc5EoMw")
+                .contentType("application/json")
+                .content(mapper.writeValueAsString(setPinDto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+    }
+
     @Test
     void testThatWeCanCallTheDeactivateUserByIdEndpoint() throws Exception {
         this.mockMvc.perform(delete("/api/user/deactivate/604b6c362b93903cb17727b3")
