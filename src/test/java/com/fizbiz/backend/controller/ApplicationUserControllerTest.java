@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fizbiz.backend.dto.ChangePasswordDto;
 import com.fizbiz.backend.dto.LoginDto;
 import com.fizbiz.backend.dto.SetPinDto;
+import com.fizbiz.backend.dto.UserVerificationDto;
 import com.fizbiz.backend.models.ApplicationUser;
 import com.fizbiz.backend.models.Gender;
 import org.junit.jupiter.api.BeforeEach;
@@ -149,11 +150,12 @@ class ApplicationUserControllerTest {
 //        InternetAddress address = new InternetAddress();
 //        address.setAddress("o.ifeoluwah@gmail.com");
 
-        String email = "o.ifeoluwah@gmail.com";
+        UserVerificationDto userVerificationDto = new UserVerificationDto();
+        userVerificationDto.setEmail("o.ifeoluwah@gmail.com");
 
         this.mockMvc.perform(post("/api/user/verify")
                 .contentType("application/json")
-                .content(mapper.writeValueAsString(email)))
+                .content(mapper.writeValueAsString(userVerificationDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
