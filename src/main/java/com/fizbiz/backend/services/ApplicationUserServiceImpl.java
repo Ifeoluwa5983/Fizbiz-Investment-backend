@@ -10,6 +10,8 @@ import com.fizbiz.backend.notification.EmailSenderServiceImpl;
 import com.fizbiz.backend.repositories.ApplicationUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
+import org.modelmapper.Conditions;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -182,25 +184,12 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
 
 
     @Override
-    public void updateApplicationUser(ApplicationUser updateProcurementPartyDto) throws FizbizException {
-        ApplicationUser existingUser = applicationUserRepository.findById(updateProcurementPartyDto.getId()).orElse(new ApplicationUser());
+    public void updateApplicationUser(ApplicationUser user) throws FizbizException {
+        ApplicationUser existingUser = applicationUserRepository.findById(user.getId()).orElse(new ApplicationUser());
 
-        if (!existingUser.getIsActive()){
-            throw new FizbizException("You cannot update a user that has been deactivated");
-        }
-
-        if (updateProcurementPartyDto.getFirstName() != null) {
-            existingUser.setFirstName(updateProcurementPartyDto.getFirstName());
-        }
-        if (updateProcurementPartyDto.getLastName() != null) {
-            existingUser.setLastName(updateProcurementPartyDto.getLastName());
-        }
-        if (updateProcurementPartyDto.getPhoneNumber() != null) {
-            existingUser.setPhoneNumber(updateProcurementPartyDto.getPhoneNumber());
-        }
-        if (updateProcurementPartyDto.getGender() != null) {
-            existingUser.setGender(updateProcurementPartyDto.getGender());
-        }
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+        mapper.map(user, existingUser);
 
         existingUser.setModifiedDate(LocalDateTime.now().toString());
         applicationUserRepository.save(existingUser);
