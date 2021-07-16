@@ -61,7 +61,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
         user.setTotalBalance(0.0);
         user.setOverallCapital(0.0);
         user.setFirstName(applicationUser.getFirstName());
-        user.setFirstName(applicationUser.getLastName());
+        user.setLastName(applicationUser.getLastName());
         applicationUserRepository.save(user);
         sendConfirmationEmail(user, url);
     }
