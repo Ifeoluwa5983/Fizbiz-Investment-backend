@@ -3,6 +3,8 @@ package com.fizbiz.backend.models;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Document
 @Data
@@ -43,4 +45,5 @@ public class ApplicationUser {
     private Boolean isActive;
 
     private Boolean isVerified;
+
 }
