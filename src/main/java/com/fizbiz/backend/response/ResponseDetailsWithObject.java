@@ -14,6 +14,6 @@ public class ResponseDetailsWithObject {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm::ss")
     private LocalDateTime timestamp;
     private String message;
-    private Object code;
+    private Object data;
     private String path;
 }

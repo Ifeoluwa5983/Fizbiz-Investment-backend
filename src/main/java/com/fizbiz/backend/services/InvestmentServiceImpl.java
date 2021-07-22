@@ -24,7 +24,7 @@ public class InvestmentServiceImpl implements InvestmentService{
     ApplicationUserRepository applicationUserRepository;
 
     @Override
-    public void startInvestment(StartInvestmentDto startInvestmentDto) throws FizbizException {
+    public Investment startInvestment(StartInvestmentDto startInvestmentDto) throws FizbizException {
         if (!applicationUserRepository.existsById(startInvestmentDto.getUserId())) {
             throw new FizbizException("User with the given id does not exist");
         }
@@ -33,6 +33,7 @@ public class InvestmentServiceImpl implements InvestmentService{
         investment.setCapital(startInvestmentDto.getCapital());
         investment.setUserId(startInvestmentDto.getUserId());
         investmentRepository.save(investment);
+        return investment;
     }
 
     @Override
@@ -40,16 +41,23 @@ public class InvestmentServiceImpl implements InvestmentService{
         if (!investmentRepository.existsById(choosePaymentMethod.getInvestmentId())){
             throw new FizbizException("Investment with the given id does not exist");
         }
+        Investment investment = investmentRepository.findById(choosePaymentMethod.getInvestmentId()).get();
         PaymentLink paymentLink = new PaymentLink();
         paymentLink.setPaymentMethod(choosePaymentMethod.getPaymentMethod().toString());
         if (choosePaymentMethod.getPaymentMethod() == PaymentMethod.valueOf(PaymentMethod.BitcoinFund.toString())){
             paymentLink.setWalletAddress("bitcoin");
+            investment.setPaymentMethod(choosePaymentMethod.getPaymentMethod());
+            investmentRepository.save(investment);
         }
         else if (choosePaymentMethod.getPaymentMethod() == PaymentMethod.valueOf(PaymentMethod.EthereumFund.toString())) {
             paymentLink.setWalletAddress("ethereum");
+            investment.setPaymentMethod(choosePaymentMethod.getPaymentMethod());
+            investmentRepository.save(investment);
         }
         else if (choosePaymentMethod.getPaymentMethod() == PaymentMethod.valueOf(PaymentMethod.TetherFund.toString())) {
             paymentLink.setWalletAddress("tether");
+            investment.setPaymentMethod(choosePaymentMethod.getPaymentMethod());
+            investmentRepository.save(investment);
         }
         else {
             throw new FizbizException("That payment method does not exists");

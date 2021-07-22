@@ -4,6 +4,7 @@ import com.fizbiz.backend.dto.*;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.models.Investment;
 import com.fizbiz.backend.response.ResponseDetails;
+import com.fizbiz.backend.response.ResponseDetailsWithObject;
 import com.fizbiz.backend.services.InvestmentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,9 +23,8 @@ public class InvestmentController {
 
     @PostMapping("/startInvestment")
     public ResponseEntity<?> startInvestment(@Valid @RequestBody StartInvestmentDto startInvestmentDto) throws FizbizException {
-        investmentService.startInvestment(startInvestmentDto);
-        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Your Investment has started successfully", HttpStatus.OK.toString());
-
+        Investment investment = investmentService.startInvestment(startInvestmentDto);
+        ResponseDetailsWithObject responseDetails = new ResponseDetailsWithObject(LocalDateTime.now(), "Your Investment has started successfully", investment, HttpStatus.OK.toString());
         return ResponseEntity.status(200).body(responseDetails);
     }
 

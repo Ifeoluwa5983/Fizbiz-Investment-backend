@@ -1,6 +1,4 @@
 package com.fizbiz.backend.controller;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fizbiz.backend.dto.ChoosePaymentMethod;
 import com.fizbiz.backend.dto.StartInvestmentDto;
@@ -56,8 +54,8 @@ class InvestmentControllerTest {
     void choosePaymentMethod() throws Exception {
 
         ChoosePaymentMethod choosePaymentMethod = new ChoosePaymentMethod();
-        choosePaymentMethod.setPaymentMethod(PaymentMethod.BitcoinFund);
-        choosePaymentMethod.setInvestmentId("60f8031f8e5e2f06db24be1b");
+        choosePaymentMethod.setPaymentMethod(PaymentMethod.TetherFund);
+        choosePaymentMethod.setInvestmentId("60f973cbb99f1d5220ab7524");
 
         this.mockMvc.perform(post("/api/investment/choosePaymentMethod")
                 .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sdXdhaEBnbWFpbC5jb20iLCJleHAiOjE2Mjc3MzAzMjJ9.6clu136EAlxxKjoFKsfU5gaGF9pRayXo8XgId2yDbt6-ZKYTmWA-Hj7zXc0m-Vwzf6iD2qyYStb0vxnpGEtpXA")
