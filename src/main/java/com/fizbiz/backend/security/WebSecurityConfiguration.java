@@ -37,6 +37,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/api/user/request-password-reset",
                         "/api/user/reset-password", "/api/user/verify").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/user/random").permitAll()
+                .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), context))

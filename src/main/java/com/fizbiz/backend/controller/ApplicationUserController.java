@@ -9,7 +9,6 @@ import com.fizbiz.backend.response.ResponseDetailsWithObject;
 import com.fizbiz.backend.services.ApplicationUserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +21,13 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api")
 public class ApplicationUserController {
 
     @Autowired
     ApplicationUserServiceImpl applicationUserService;
 
-    @PostMapping("/register")
+    @PostMapping("/user/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody ApplicationUser applicationUser, HttpServletRequest httpServletRequest) throws FizbizException {
         ApplicationUser user = applicationUserService.findApplicationUserByEmail(applicationUser.getEmailAddress());
         if (user == null) {
@@ -42,7 +41,7 @@ public class ApplicationUserController {
         return ResponseEntity.status(200).body(responseDetails);
     }
 
-    @PostMapping("/set-pin")
+    @PostMapping("/user/set-pin")
     public ResponseEntity<?> setPin(@Valid @RequestBody SetPinDto setPinDto) throws FizbizException {
         applicationUserService.setPin(setPinDto);
         ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Pin has been set successfully", "success");
@@ -50,7 +49,7 @@ public class ApplicationUserController {
     }
 
 
-    @PostMapping ("/request-password-reset")
+    @PostMapping ("/user/request-password-reset")
     public ResponseEntity<?> RequestPasswordReset(@Valid @RequestBody RequestResetPasswordDto resetPasswordDto, HttpServletRequest httpServletRequest) throws  FizbizException {
         String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
         applicationUserService.sendResetPasswordToken(resetPasswordDto.getEmailAddress(), url);
@@ -58,7 +57,7 @@ public class ApplicationUserController {
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
-    @PostMapping("/reset-password")
+    @PostMapping("/user/reset-password")
     public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordDto resetPasswordDto, HttpServletRequest httpServletRequest) throws FizbizException {
         String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
         applicationUserService.resetPassword(resetPasswordDto.getToken(), resetPasswordDto.getPassword(), url);
@@ -66,14 +65,14 @@ public class ApplicationUserController {
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
-    @PostMapping("/change-password")
+    @PostMapping("/user/change-password")
     public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordDto changePasswordDto) throws FizbizException {
         applicationUserService.changePassword(changePasswordDto);
         ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Password have been changed successfully", "success");
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
-    @PostMapping("/verify")
+    @PostMapping("/user/verify")
     public ResponseEntity<?> verifyUser(@Valid @RequestBody UserVerificationDto email, HttpServletRequest httpServletRequest , WebRequest request) {
         String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
 
@@ -87,7 +86,7 @@ public class ApplicationUserController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<?> findUserById(@PathVariable String id) throws FizbizException {
         if (applicationUserService.procurementPartyDoesNotExist(id)){
             throw new FizbizException("User with that id does not exist");
@@ -96,14 +95,14 @@ public class ApplicationUserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping("user/")
 //    @PreAuthorize("hasAnyRole('ADMIN, SUPER_ADMIN')")
     public ResponseEntity<?> findAllUsers() {
         List<ApplicationUser> users = applicationUserService.findAllApplicationUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/user/update")
     public ResponseEntity<?> updateUser(@Valid @RequestBody ApplicationUser applicationUser) throws FizbizException {
         if (applicationUser.getId() == null) {
             throw new FizbizException("User id cannot be null");
@@ -117,7 +116,7 @@ public class ApplicationUserController {
     }
 
 
-    @DeleteMapping("/deactivate/{id}")
+    @DeleteMapping("/user/deactivate/{id}")
     public ResponseEntity<?> deactivateUser(@PathVariable String id) throws FizbizException {
         if (applicationUserService.procurementPartyDoesNotExist(id)){
             throw new FizbizException("User with that id does not exist");
