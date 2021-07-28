@@ -133,8 +133,8 @@ class ApplicationUserControllerTest {
     void testThatUserCanLogIn () throws Exception {
         LoginDto loginDto = new LoginDto();
 
-        loginDto.setEmailAddress("o.ifeolwah@gmail.com");
-        loginDto.setPassword("password");
+        loginDto.setEmailAddress("o.ifeoluwah@gmail.com");
+        loginDto.setPassword("Ife");
 
         this.mockMvc.perform(post("/api/user/login")
                 .contentType("application/json")

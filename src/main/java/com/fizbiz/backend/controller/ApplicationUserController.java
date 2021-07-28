@@ -127,10 +127,6 @@ public class ApplicationUserController {
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
-    @GetMapping("/random")
-    public String returnString(){
-        return "Hello world";
-    }
 
 }
 
