@@ -21,13 +21,13 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class ApplicationUserController {
 
     @Autowired
     ApplicationUserServiceImpl applicationUserService;
 
-    @PostMapping("/user/register")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody ApplicationUser applicationUser, HttpServletRequest httpServletRequest) throws FizbizException {
         ApplicationUser user = applicationUserService.findApplicationUserByEmail(applicationUser.getEmailAddress());
         if (user == null) {
@@ -41,7 +41,7 @@ public class ApplicationUserController {
         return ResponseEntity.status(200).body(responseDetails);
     }
 
-    @PostMapping("/user/set-pin")
+    @PostMapping("/set-pin")
     public ResponseEntity<?> setPin(@Valid @RequestBody SetPinDto setPinDto) throws FizbizException {
         applicationUserService.setPin(setPinDto);
         ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Pin has been set successfully", "success");
@@ -49,7 +49,7 @@ public class ApplicationUserController {
     }
 
 
-    @PostMapping ("/user/request-password-reset")
+    @PostMapping ("/request-password-reset")
     public ResponseEntity<?> RequestPasswordReset(@Valid @RequestBody RequestResetPasswordDto resetPasswordDto, HttpServletRequest httpServletRequest) throws  FizbizException {
         String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
         applicationUserService.sendResetPasswordToken(resetPasswordDto.getEmailAddress(), url);
@@ -57,7 +57,7 @@ public class ApplicationUserController {
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
-    @PostMapping("/user/reset-password")
+    @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordDto resetPasswordDto, HttpServletRequest httpServletRequest) throws FizbizException {
         String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
         applicationUserService.resetPassword(resetPasswordDto.getToken(), resetPasswordDto.getPassword(), url);
@@ -65,14 +65,14 @@ public class ApplicationUserController {
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
-    @PostMapping("/user/change-password")
+    @PostMapping("/change-password")
     public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordDto changePasswordDto) throws FizbizException {
         applicationUserService.changePassword(changePasswordDto);
         ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Password have been changed successfully", "success");
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
-    @PostMapping("/user/verify")
+    @PostMapping("/verify")
     public ResponseEntity<?> verifyUser(@Valid @RequestBody UserVerificationDto email, HttpServletRequest httpServletRequest , WebRequest request) {
         String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
 
@@ -86,7 +86,7 @@ public class ApplicationUserController {
         }
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> findUserById(@PathVariable String id) throws FizbizException {
         if (applicationUserService.procurementPartyDoesNotExist(id)){
             throw new FizbizException("User with that id does not exist");
@@ -102,7 +102,7 @@ public class ApplicationUserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @PutMapping("/user/update")
+    @PutMapping("/update")
     public ResponseEntity<?> updateUser(@Valid @RequestBody ApplicationUser applicationUser) throws FizbizException {
         if (applicationUser.getId() == null) {
             throw new FizbizException("User id cannot be null");
@@ -116,7 +116,7 @@ public class ApplicationUserController {
     }
 
 
-    @DeleteMapping("/user/deactivate/{id}")
+    @DeleteMapping("/deactivate/{id}")
     public ResponseEntity<?> deactivateUser(@PathVariable String id) throws FizbizException {
         if (applicationUserService.procurementPartyDoesNotExist(id)){
             throw new FizbizException("User with that id does not exist");
