@@ -1,11 +1,13 @@
 package com.fizbiz.backend.repositories;
 
 import com.fizbiz.backend.models.ApplicationUser;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 
-public interface ApplicationUserRepository extends MongoRepository<ApplicationUser, String> {
+@Repository
+public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, String> {
 
     ApplicationUser findByEmailAddress(String emailAddress);
 

@@ -1,15 +1,19 @@
 package com.fizbiz.backend.models;
 
 import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.Document;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-@Document
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.time.LocalDate;
+
 @Data
+@Entity
 public class ApplicationUser {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private String id;
 
     private String firstName;
