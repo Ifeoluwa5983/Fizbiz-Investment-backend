@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface InvestmentRepository extends JpaRepository<Investment, String> {
 
-    List<Investment> findAllByUserId(String userId);
+    List<Investment> findAllByUserId(Long userId);
 
 }

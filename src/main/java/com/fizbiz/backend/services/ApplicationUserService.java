@@ -19,9 +19,9 @@ public interface ApplicationUserService {
 
     ApplicationUser findApplicationUserByEmail(String email);
 
-    ApplicationUser findApplicationUserById(String id);
+    ApplicationUser findApplicationUserById(Long id);
 
-    void deactivateApplicationUserById(String id) throws FizbizException;
+    void deactivateApplicationUserById(Long id) throws FizbizException;
 
     List<ApplicationUser> findAllApplicationUsers();
 

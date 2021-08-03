@@ -87,7 +87,7 @@ public class ApplicationUserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findUserById(@PathVariable String id) throws FizbizException {
+    public ResponseEntity<?> findUserById(@PathVariable Long id) throws FizbizException {
         if (applicationUserService.procurementPartyDoesNotExist(id)){
             throw new FizbizException("User with that id does not exist");
         }
@@ -117,7 +117,7 @@ public class ApplicationUserController {
 
 
     @DeleteMapping("/deactivate/{id}")
-    public ResponseEntity<?> deactivateUser(@PathVariable String id) throws FizbizException {
+    public ResponseEntity<?> deactivateUser(@PathVariable Long id) throws FizbizException {
         if (applicationUserService.procurementPartyDoesNotExist(id)){
             throw new FizbizException("User with that id does not exist");
         }

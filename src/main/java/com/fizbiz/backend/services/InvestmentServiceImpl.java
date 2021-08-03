@@ -79,7 +79,7 @@ public class InvestmentServiceImpl implements InvestmentService{
     }
 
     @Override
-    public List<Investment> findAllInvestmentOfAUser(String userId) throws FizbizException {
+    public List<Investment> findAllInvestmentOfAUser(Long userId) throws FizbizException {
         if (!applicationUserRepository.existsById(userId)){
             throw new FizbizException("The user with the id does not exist");
         }

@@ -39,7 +39,7 @@ class InvestmentControllerTest {
         StartInvestmentDto startInvestmentDto = new StartInvestmentDto();
         startInvestmentDto.setInvestmentType(InvestmentType.Gold);
         startInvestmentDto.setCapital(1000);
-        startInvestmentDto.setUserId("60eec28ec03c0d09ba81426b");
+//        startInvestmentDto.setUserId("60eec28ec03c0d09ba81426b");
 
         this.mockMvc.perform(post("/api/investment/startInvestment")
                 .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sdXdhaEBnbWFpbC5jb20iLCJleHAiOjE2Mjc3MzAzMjJ9.6clu136EAlxxKjoFKsfU5gaGF9pRayXo8XgId2yDbt6-ZKYTmWA-Hj7zXc0m-Vwzf6iD2qyYStb0vxnpGEtpXA")
