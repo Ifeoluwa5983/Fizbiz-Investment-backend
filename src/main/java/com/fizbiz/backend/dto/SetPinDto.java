@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SetPinDto {
 
-    private String userId;
+    private Long userId;
 
     private String pin;
 }

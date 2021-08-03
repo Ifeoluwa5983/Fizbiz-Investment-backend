@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 
 @Repository
-public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, String> {
+public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, Long> {
 
     ApplicationUser findByEmailAddress(String emailAddress);
 
@@ -15,7 +15,7 @@ public interface ApplicationUserRepository extends JpaRepository<ApplicationUser
 
     ApplicationUser findByToken(String token);
 
-    default void deactivateById(String id){
+    default void deactivateById(Long id){
         ApplicationUser applicationUser = findById(id).orElse(null);
         assert applicationUser != null;
         applicationUser.setIsActive(false);

@@ -35,7 +35,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
     @Autowired
     TemplateEngine templateEngine;
 
-    public boolean procurementPartyDoesNotExist(String id) {
+    public boolean procurementPartyDoesNotExist(Long id) {
         return !applicationUserRepository.existsById(id);
     }
 
@@ -162,12 +162,12 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
     }
 
     @Override
-    public ApplicationUser findApplicationUserById(String id) {
+    public ApplicationUser findApplicationUserById(Long id) {
         return applicationUserRepository.findById(id).orElse(null);
     }
 
     @Override
-    public void deactivateApplicationUserById(String id) throws FizbizException {
+    public void deactivateApplicationUserById(Long id) throws FizbizException {
         ApplicationUser procurementParty = applicationUserRepository.findById(id).orElse(null);
         assert procurementParty != null;
         if (!procurementParty.getIsActive()){

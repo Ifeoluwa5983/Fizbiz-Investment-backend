@@ -14,5 +14,5 @@ public class ChangePasswordDto {
     private String newPassword;
 
     @NotEmpty
-    private String userId;
+    private Long userId;
 }

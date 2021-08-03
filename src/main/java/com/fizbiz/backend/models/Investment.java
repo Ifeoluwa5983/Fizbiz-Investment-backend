@@ -26,7 +26,7 @@ public class Investment {
 
     private Status status;
 
-    private String userId;
+    private Long userId;
 
     private double returns;
 

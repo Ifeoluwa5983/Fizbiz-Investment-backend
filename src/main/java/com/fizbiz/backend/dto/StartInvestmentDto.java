@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class StartInvestmentDto {
 
-    private String userId;
+    private Long userId;
 
     private double capital;
 

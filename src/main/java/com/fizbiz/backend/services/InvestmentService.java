@@ -18,5 +18,5 @@ public interface InvestmentService {
 
     Investment findInvestmentById(String id) throws FizbizException;
 
-    List<Investment> findAllInvestmentOfAUser(String userId) throws FizbizException;
+    List<Investment> findAllInvestmentOfAUser(Long userId) throws FizbizException;
 }
