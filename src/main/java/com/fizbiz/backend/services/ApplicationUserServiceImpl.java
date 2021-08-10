@@ -69,11 +69,6 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
     public String verifyEmailToken(UserVerificationDto email, String url) throws FizbizException {
 
         String verificationToken = String.format("%04d", random.nextInt(10000));
-        ApplicationUser optional = applicationUserRepository.findByEmailAddress(email.getEmail());
-        log.info("" + optional);
-        if (optional != null) {
-            throw new FizbizException("User already exist");
-        }
 
         ApplicationUser user = new ApplicationUser();
         user.setToken(verificationToken);
