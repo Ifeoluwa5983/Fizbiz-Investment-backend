@@ -7,6 +7,7 @@ import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.models.Investment;
 import com.fizbiz.backend.response.ResponseDetailsWithObject;
 import com.fizbiz.backend.services.InvestmentServiceImpl;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +25,10 @@ public class InvestmentController {
     InvestmentServiceImpl investmentService;
 
     @PostMapping("/startInvestment")
-    public ResponseEntity<?> startInvestment(@Valid @RequestBody StartInvestmentDto startInvestmentDto) throws FizbizException {
-        Investment investment = investmentService.startInvestment(startInvestmentDto);
-        ResponseDetailsWithObject responseDetails = new ResponseDetailsWithObject(LocalDateTime.now(), "Your Investment has started successfully", investment, HttpStatus.OK.toString());
+    public ResponseEntity<?> startInvestment(@Valid @RequestBody Investment startInvestmentDto) throws FizbizException {
+        PaymentLink paymentLink = investmentService.startInvestment(startInvestmentDto);
+        ResponseDetailsWithObject responseDetails = new ResponseDetailsWithObject(LocalDateTime.now(), "Your Investment has started successfully", paymentLink, HttpStatus.OK.toString());
         return ResponseEntity.status(200).body(responseDetails);
-    }
-
-    @PostMapping("/choosePaymentMethod")
-    public ResponseEntity<?> choosePaymentMethod(@Valid @RequestBody ChoosePaymentMethod choosePaymentMethod) throws FizbizException {
-        PaymentLink paymentLink = investmentService.choosePaymentMethod(choosePaymentMethod);
-        return ResponseEntity.status(200).body(paymentLink);
     }
 
     @GetMapping("/{id}")
