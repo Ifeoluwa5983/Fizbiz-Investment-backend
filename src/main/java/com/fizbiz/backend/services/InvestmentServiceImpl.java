@@ -6,11 +6,13 @@ import com.fizbiz.backend.dto.StartInvestmentDto;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.models.Investment;
 import com.fizbiz.backend.models.PaymentMethod;
+import com.fizbiz.backend.models.Status;
 import com.fizbiz.backend.repositories.ApplicationUserRepository;
 import com.fizbiz.backend.repositories.InvestmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -23,47 +25,38 @@ public class InvestmentServiceImpl implements InvestmentService {
     ApplicationUserRepository applicationUserRepository;
 
     @Override
-    public Investment startInvestment(StartInvestmentDto startInvestmentDto) throws FizbizException {
+    public PaymentLink startInvestment(Investment startInvestmentDto) throws FizbizException {
         if (!applicationUserRepository.existsById(startInvestmentDto.getUserId())) {
             throw new FizbizException("User with the given id does not exist");
         }
         Investment investment = new Investment();
+        PaymentLink paymentLink = new PaymentLink();
         investment.setInvestmentType(startInvestmentDto.getInvestmentType());
         investment.setCapital(startInvestmentDto.getCapital());
         investment.setUserId(startInvestmentDto.getUserId());
-        investmentRepository.save(investment);
-        return investment;
-    }
-
-
-    @Override
-    public PaymentLink choosePaymentMethod(ChoosePaymentMethod choosePaymentMethod) throws FizbizException {
-        if (!investmentRepository.existsById(choosePaymentMethod.getInvestmentId())){
-            throw new FizbizException("Investment with the given id does not exist");
-        }
-        Investment investment = investmentRepository.findById(choosePaymentMethod.getInvestmentId()).get();
-        PaymentLink paymentLink = new PaymentLink();
-        paymentLink.setPaymentMethod(choosePaymentMethod.getPaymentMethod().toString());
-        if (choosePaymentMethod.getPaymentMethod() == PaymentMethod.valueOf(PaymentMethod.BitcoinFund.toString())){
+        investment.setInvestmentDate(LocalDate.now());
+        investment.setStatus(Status.Pending);
+        if (startInvestmentDto.getPaymentMethod() == PaymentMethod.valueOf(PaymentMethod.BitcoinFund.toString())){
             paymentLink.setWalletAddress("bitcoin");
-            investment.setPaymentMethod(choosePaymentMethod.getPaymentMethod());
-            investmentRepository.save(investment);
+            investment.setPaymentMethod(startInvestmentDto.getPaymentMethod());
         }
-        else if (choosePaymentMethod.getPaymentMethod() == PaymentMethod.valueOf(PaymentMethod.EthereumFund.toString())) {
+        else if (startInvestmentDto.getPaymentMethod() == PaymentMethod.valueOf(PaymentMethod.EthereumFund.toString())) {
             paymentLink.setWalletAddress("ethereum");
-            investment.setPaymentMethod(choosePaymentMethod.getPaymentMethod());
-            investmentRepository.save(investment);
+            investment.setPaymentMethod(startInvestmentDto.getPaymentMethod());
         }
-        else if (choosePaymentMethod.getPaymentMethod() == PaymentMethod.valueOf(PaymentMethod.TetherFund.toString())) {
+        else if (startInvestmentDto.getPaymentMethod() == PaymentMethod.valueOf(PaymentMethod.TetherFund.toString())) {
             paymentLink.setWalletAddress("tether");
-            investment.setPaymentMethod(choosePaymentMethod.getPaymentMethod());
-            investmentRepository.save(investment);
+            investment.setPaymentMethod(startInvestmentDto.getPaymentMethod());
         }
         else {
             throw new FizbizException("That payment method does not exists");
         }
+
+        paymentLink.setPaymentMethod(startInvestmentDto.getPaymentMethod().toString());
+        investmentRepository.save(investment);
         return paymentLink;
     }
+
 
     @Override
     public List<Investment> findAllInvestment() {

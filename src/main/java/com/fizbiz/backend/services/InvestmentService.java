@@ -10,9 +10,7 @@ import java.util.List;
 
 public interface InvestmentService {
 
-    Investment startInvestment(StartInvestmentDto startInvestmentDto) throws FizbizException;
-
-    PaymentLink choosePaymentMethod(ChoosePaymentMethod choosePaymentMethod) throws FizbizException;
+    PaymentLink startInvestment(Investment startInvestmentDto) throws FizbizException;
 
     List<Investment> findAllInvestment();
 

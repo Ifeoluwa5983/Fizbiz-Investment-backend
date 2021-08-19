@@ -1,10 +1,7 @@
 package com.fizbiz.backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fizbiz.backend.dto.ChangePasswordDto;
-import com.fizbiz.backend.dto.LoginDto;
-import com.fizbiz.backend.dto.SetPinDto;
-import com.fizbiz.backend.dto.UserVerificationDto;
+import com.fizbiz.backend.dto.*;
 import com.fizbiz.backend.models.ApplicationUser;
 import com.fizbiz.backend.models.Gender;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -43,7 +42,7 @@ class ApplicationUserControllerTest {
 //        address.setAddress("o.ifeoluwah@gmail.com");
 
         UserVerificationDto userVerificationDto = new UserVerificationDto();
-        userVerificationDto.setEmail("g.omotosho1@gmail.com");
+        userVerificationDto.setEmail("o.ifeoluwah@gmail.com");
 
         this.mockMvc.perform(post("/api/user/verify")
                         .contentType("application/json")
@@ -56,12 +55,12 @@ class ApplicationUserControllerTest {
     @Test
     void testCreateApplicationUserEndpoint_thenReturnOK() throws Exception {
 
-        applicationUser.setFirstName("Gideon");
-        applicationUser.setLastName("Omotosho");
-        applicationUser.setToken("5224");
-        applicationUser.setGender(Gender.Male);
+        applicationUser.setFirstName("Ifeoluwa");
+        applicationUser.setLastName("Oluwafemi");
+        applicationUser.setToken("9587");
+        applicationUser.setGender(Gender.Female);
         applicationUser.setPassword("password");
-        applicationUser.setPhoneNumber("08033995588");
+        applicationUser.setPhoneNumber("08098765432");
 
         this.mockMvc.perform(post("/api/user/register")
                 .contentType("application/json")
@@ -74,8 +73,8 @@ class ApplicationUserControllerTest {
     @Test
     void testThatWeCanCallTheFindUserByIdEndPoint() throws Exception {
 
-        this.mockMvc.perform(get("/api/user/60da41555e541c35851e57c1")
-                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sd2FoQGdtYWlsLmNvbSIsImV4cCI6MTYyNTgyMjc2N30.0ZsEjXeYxTrfW4yF6qCU9ng8Qil4JCWOvcATo_HLDvIJnxKVQNZ81X-i72MV2fK_KNQBFthlV50idGLZc5EoMw"))
+        this.mockMvc.perform(get("/api/user/1")
+                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sdXdhaEBnbWFpbC5jb20iLCJleHAiOjE2MzAxNTcyMTJ9.h_1Szcu1B54hYrvQeIVhdCHUeGe8LUMD06MkIi_IIPiE8o1zGotCUYMJ10X26psKydlAdX3YXk8xfUfUyg3ZyQ"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -94,9 +93,9 @@ class ApplicationUserControllerTest {
         ChangePasswordDto changePasswordDto = new ChangePasswordDto();
         changePasswordDto.setOldPassword("password");
         changePasswordDto.setNewPassword("Ifeoluwa");
-        changePasswordDto.setUserId(5L);
+        changePasswordDto.setUserId(1L);
 
-        this.mockMvc.perform(post("/api/user/change-password").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sd2FoQGdtYWlsLmNvbSIsImV4cCI6MTYyNTgyMjc2N30.0ZsEjXeYxTrfW4yF6qCU9ng8Qil4JCWOvcATo_HLDvIJnxKVQNZ81X-i72MV2fK_KNQBFthlV50idGLZc5EoMw")
+        this.mockMvc.perform(post("/api/user/change-password").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sdXdhaEBnbWFpbC5jb20iLCJleHAiOjE2MzAxNTcyMTJ9.h_1Szcu1B54hYrvQeIVhdCHUeGe8LUMD06MkIi_IIPiE8o1zGotCUYMJ10X26psKydlAdX3YXk8xfUfUyg3ZyQ")
                 .contentType("application/json")
                 .content(mapper.writeValueAsString(changePasswordDto)))
                 .andExpect(status().isOk())
@@ -107,13 +106,43 @@ class ApplicationUserControllerTest {
     @Test
     void testThatWeCanCallUpdateUserEndpoint() throws Exception {
         ApplicationUser updateProcurementPartyDto = new ApplicationUser();
-        updateProcurementPartyDto.setId(5L);
-        updateProcurementPartyDto.setFirstName("Ifeoluwa");
+        updateProcurementPartyDto.setId(1L);
+        updateProcurementPartyDto.setGender(Gender.Male);
+        updateProcurementPartyDto.setDateOfBirth(LocalDate.of(2003, 02, 02));
 
         this.mockMvc.perform(put("/api/user/update")
-                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sd2FoQGdtYWlsLmNvbSIsImV4cCI6MTYyNTgyMjc2N30.0ZsEjXeYxTrfW4yF6qCU9ng8Qil4JCWOvcATo_HLDvIJnxKVQNZ81X-i72MV2fK_KNQBFthlV50idGLZc5EoMw")
+                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sdXdhaEBnbWFpbC5jb20iLCJleHAiOjE2MzAxNTcyMTJ9.h_1Szcu1B54hYrvQeIVhdCHUeGe8LUMD06MkIi_IIPiE8o1zGotCUYMJ10X26psKydlAdX3YXk8xfUfUyg3ZyQ")
                 .contentType("application/json")
                 .content(mapper.writeValueAsString(updateProcurementPartyDto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+    }
+
+    @Test
+    void testThatWeCanCallRequestPasswordResetEndpoint() throws Exception {
+        RequestResetPasswordDto resetPasswordDto = new RequestResetPasswordDto();
+        resetPasswordDto.setEmailAddress("o.ifeoluwah@gmail.com");
+
+        this.mockMvc.perform(post("/api/user/request-password-reset")
+                .contentType("application/json")
+                .content(mapper.writeValueAsString(resetPasswordDto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+    }
+
+    @Test
+    void testThatWeCanCallResetPasswordEndpoint() throws Exception {
+        ResetPasswordDto resetPasswordDto = new ResetPasswordDto();
+        resetPasswordDto.setToken("hzEwYc1cmyxNpifQGVBNMQkzqSyzD5BblidvI5OjFn3VykNGrq6ObXiTlF2SNH6X");
+        resetPasswordDto.setPassword("Ife");
+
+        this.mockMvc.perform(post("/api/user/reset-password")
+                .contentType("application/json")
+                .content(mapper.writeValueAsString(resetPasswordDto)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();

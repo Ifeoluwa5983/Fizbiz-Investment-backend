@@ -1,5 +1,6 @@
 package com.fizbiz.backend.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fizbiz.backend.dto.ChangePasswordDto;
 import com.fizbiz.backend.dto.SetPinDto;
 import com.fizbiz.backend.dto.UserVerificationDto;
@@ -89,6 +90,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
             throw new FizbizException("Incorrect password");
         }
         applicationUser.setPassword(bCryptPasswordEncoder.encode(changePasswordDto.getNewPassword()));
+        applicationUserRepository.save(applicationUser);
     }
 
     @Override
@@ -129,9 +131,9 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
             throw new FizbizException("User does not exist");
         } else {
             applicationUser.setToken(null);
-            applicationUser.setPassword(newPassword);
-            sendConfirmResetPasswordEmail(applicationUser, url);
+            applicationUser.setPassword(encryptPassword(newPassword));
             applicationUserRepository.save(applicationUser);
+            sendConfirmResetPasswordEmail(applicationUser, url);
         }
     }
 

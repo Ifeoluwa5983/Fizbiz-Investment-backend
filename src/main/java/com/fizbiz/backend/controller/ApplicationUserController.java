@@ -53,7 +53,8 @@ public class ApplicationUserController {
     public ResponseEntity<?> RequestPasswordReset(@Valid @RequestBody RequestResetPasswordDto resetPasswordDto, HttpServletRequest httpServletRequest) throws  FizbizException {
         String url = httpServletRequest.getRequestURL().toString().replace(httpServletRequest.getServletPath(), "");
         applicationUserService.sendResetPasswordToken(resetPasswordDto.getEmailAddress(), url);
-        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "An email has been sent to you , reset your password", "success");
+        ApplicationUser user = applicationUserService.findApplicationUserByEmail(resetPasswordDto.getEmailAddress());
+        ResponseDetailsWithObject responseDetails = new ResponseDetailsWithObject(LocalDateTime.now(), "An email has been sent to you , reset your password",user.getToken(), "success");
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 

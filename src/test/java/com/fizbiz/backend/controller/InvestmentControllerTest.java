@@ -36,35 +36,23 @@ class InvestmentControllerTest {
     @Test
     void startInvestment() throws Exception {
 
-        StartInvestmentDto startInvestmentDto = new StartInvestmentDto();
-        startInvestmentDto.setInvestmentType(InvestmentType.Gold);
-        startInvestmentDto.setCapital(1000);
+        Investment investment = new Investment();
+        investment.setInvestmentType(InvestmentType.Gold);
+        investment.setCapital(1000);
+        investment.setPaymentMethod(PaymentMethod.TetherFund);
+        investment.setUserId(1L);
+        investment.setCapital(2000.00);
 //        startInvestmentDto.setUserId("60eec28ec03c0d09ba81426b");
 
         this.mockMvc.perform(post("/api/investment/startInvestment")
-                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sdXdhaEBnbWFpbC5jb20iLCJleHAiOjE2Mjc3MzAzMjJ9.6clu136EAlxxKjoFKsfU5gaGF9pRayXo8XgId2yDbt6-ZKYTmWA-Hj7zXc0m-Vwzf6iD2qyYStb0vxnpGEtpXA")
+                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sdXdhaEBnbWFpbC5jb20iLCJleHAiOjE2MzAxNTcyMTJ9.h_1Szcu1B54hYrvQeIVhdCHUeGe8LUMD06MkIi_IIPiE8o1zGotCUYMJ10X26psKydlAdX3YXk8xfUfUyg3ZyQ")
                 .contentType("application/json")
-                .content(mapper.writeValueAsString(startInvestmentDto)))
+                .content(mapper.writeValueAsString(investment)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
     }
 
-    @Test
-    void choosePaymentMethod() throws Exception {
-
-        ChoosePaymentMethod choosePaymentMethod = new ChoosePaymentMethod();
-        choosePaymentMethod.setPaymentMethod(PaymentMethod.TetherFund);
-        choosePaymentMethod.setInvestmentId("60f973cbb99f1d5220ab7524");
-
-        this.mockMvc.perform(post("/api/investment/choosePaymentMethod")
-                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sdXdhaEBnbWFpbC5jb20iLCJleHAiOjE2Mjc3MzAzMjJ9.6clu136EAlxxKjoFKsfU5gaGF9pRayXo8XgId2yDbt6-ZKYTmWA-Hj7zXc0m-Vwzf6iD2qyYStb0vxnpGEtpXA")
-                .contentType("application/json")
-                .content(mapper.writeValueAsString(choosePaymentMethod)))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andReturn();
-    }
 
     @Test
     void findInvestmentById() throws Exception {
