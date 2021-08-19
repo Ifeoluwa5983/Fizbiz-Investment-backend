@@ -4,7 +4,6 @@ import com.fizbiz.backend.dto.ChoosePaymentMethod;
 import com.fizbiz.backend.dto.PaymentLink;
 import com.fizbiz.backend.dto.StartInvestmentDto;
 import com.fizbiz.backend.exception.FizbizException;
-import com.fizbiz.backend.models.ApplicationUser;
 import com.fizbiz.backend.models.Investment;
 import com.fizbiz.backend.models.PaymentMethod;
 import com.fizbiz.backend.repositories.ApplicationUserRepository;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class InvestmentServiceImpl implements InvestmentService{
+public class InvestmentServiceImpl implements InvestmentService {
 
     @Autowired
     InvestmentRepository investmentRepository;
@@ -35,6 +34,7 @@ public class InvestmentServiceImpl implements InvestmentService{
         investmentRepository.save(investment);
         return investment;
     }
+
 
     @Override
     public PaymentLink choosePaymentMethod(ChoosePaymentMethod choosePaymentMethod) throws FizbizException {
