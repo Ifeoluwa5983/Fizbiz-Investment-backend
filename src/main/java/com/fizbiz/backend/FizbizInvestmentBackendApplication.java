@@ -21,4 +21,7 @@ public class FizbizInvestmentBackendApplication {
 		return new TemplateEngine();
 	}
 
+//	@Bean
+//	public RepositoryRestConfiguration repositoryRestConfiguration
+
 }

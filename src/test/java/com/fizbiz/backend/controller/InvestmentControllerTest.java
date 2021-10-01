@@ -41,7 +41,6 @@ class InvestmentControllerTest {
         investment.setCapital(1000);
         investment.setPaymentMethod(PaymentMethod.TetherFund);
         investment.setUserId(1L);
-        investment.setCapital(2000.00);
 //        startInvestmentDto.setUserId("60eec28ec03c0d09ba81426b");
 
         this.mockMvc.perform(post("/api/investment/startInvestment")

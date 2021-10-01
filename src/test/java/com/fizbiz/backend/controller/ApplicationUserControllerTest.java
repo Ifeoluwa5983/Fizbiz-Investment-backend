@@ -137,7 +137,7 @@ class ApplicationUserControllerTest {
     @Test
     void testThatWeCanCallResetPasswordEndpoint() throws Exception {
         ResetPasswordDto resetPasswordDto = new ResetPasswordDto();
-        resetPasswordDto.setToken("hzEwYc1cmyxNpifQGVBNMQkzqSyzD5BblidvI5OjFn3VykNGrq6ObXiTlF2SNH6X");
+        resetPasswordDto.setToken("19ARkdAZaLPB972IVWeivKixPz1QKpHMcyotyhgB5ZAUpyeTDEahxddrDNXMIQ3r");
         resetPasswordDto.setPassword("Ife");
 
         this.mockMvc.perform(post("/api/user/reset-password")
@@ -178,7 +178,7 @@ class ApplicationUserControllerTest {
         LoginDto loginDto = new LoginDto();
 
         loginDto.setEmailAddress("o.ifeoluwah@gmail.com");
-        loginDto.setPassword("Ife");
+        loginDto.setPassword("Kolawole");
 
         this.mockMvc.perform(post("/api/user/login")
                 .contentType("application/json")

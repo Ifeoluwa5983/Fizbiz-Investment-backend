@@ -65,7 +65,7 @@ public class InvestmentServiceImpl implements InvestmentService{
     }
 
     @Override
-    public Investment findInvestmentById(String id) throws FizbizException {
+    public Investment findInvestmentById(Long id) throws FizbizException {
         if (!investmentRepository.existsById(id)){
             throw new FizbizException("The id does not exist");
         }

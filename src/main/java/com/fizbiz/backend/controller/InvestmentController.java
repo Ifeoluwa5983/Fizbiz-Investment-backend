@@ -32,7 +32,7 @@ public class InvestmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findInvestmentById(@PathVariable String id) throws FizbizException {
+    public ResponseEntity<?> findInvestmentById(@PathVariable Long id) throws FizbizException {
         Investment investment = investmentService.findInvestmentById(id);
         return new ResponseEntity<>(investment, HttpStatus.OK);
     }
