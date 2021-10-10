@@ -11,4 +11,6 @@ public class PaymentLink {
     private Double initialCapital;
     private String status;
     private Double returns;
+    private String investmentType;
+    private String imageUrl;
 }

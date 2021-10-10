@@ -53,7 +53,7 @@ public class InvestmentController {
     @GetMapping("/status/{id}")
     public ResponseEntity<?> changeInvestmentStatus(@PathVariable Long id) throws FizbizException {
         investmentService.findInvestmentById(id);
-        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Your Investment has started successfully", HttpStatus.OK.toString());
+        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Your Investment status has been changed successfully", HttpStatus.OK.toString());
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 

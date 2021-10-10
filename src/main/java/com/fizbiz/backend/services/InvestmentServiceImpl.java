@@ -69,6 +69,9 @@ public class InvestmentServiceImpl implements InvestmentService {
         paymentLink.setPaymentMethod(startInvestmentDto.getPaymentMethod().toString());
         paymentLink.setReturns(investment.getReturns());
         paymentLink.setInitialCapital(investment.getCapital());
+        paymentLink.setStatus(investment.getStatus().toString());
+        paymentLink.setInvestmentType(investment.getInvestmentType().toString());
+        paymentLink.setImageUrl(investment.getImageUrl());
         investmentRepository.save(investment);
         return paymentLink;
     }

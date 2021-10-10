@@ -38,11 +38,8 @@ class ApplicationUserControllerTest {
     @Test
     void testThatUserCanCanBeVerified () throws Exception {
 
-//        InternetAddress address = new InternetAddress();
-//        address.setAddress("o.ifeoluwah@gmail.com");
-
         UserVerificationDto userVerificationDto = new UserVerificationDto();
-        userVerificationDto.setEmail("o.ifeoluwah@gmail.com");
+        userVerificationDto.setEmail("kolawoleolufemi9@gmail.com");
 
         this.mockMvc.perform(post("/api/user/verify")
                         .contentType("application/json")
@@ -57,7 +54,7 @@ class ApplicationUserControllerTest {
 
         applicationUser.setFirstName("Ifeoluwa");
         applicationUser.setLastName("Oluwafemi");
-        applicationUser.setToken("9587");
+        applicationUser.setToken("4596");
         applicationUser.setGender(Gender.Female);
         applicationUser.setPassword("password");
         applicationUser.setPhoneNumber("08098765432");
@@ -177,8 +174,8 @@ class ApplicationUserControllerTest {
     void testThatUserCanLogIn () throws Exception {
         LoginDto loginDto = new LoginDto();
 
-        loginDto.setEmailAddress("o.ifeoluwah@gmail.com");
-        loginDto.setPassword("Kolawole");
+        loginDto.setEmailAddress("kolawoleolufemi9@gmail.com");
+        loginDto.setPassword("password");
 
         this.mockMvc.perform(post("/api/user/login")
                 .contentType("application/json")
