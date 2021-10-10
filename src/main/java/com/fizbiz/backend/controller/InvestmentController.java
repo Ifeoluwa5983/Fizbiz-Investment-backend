@@ -5,6 +5,7 @@ import com.fizbiz.backend.dto.PaymentLink;
 import com.fizbiz.backend.dto.StartInvestmentDto;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.models.Investment;
+import com.fizbiz.backend.response.ResponseDetails;
 import com.fizbiz.backend.response.ResponseDetailsWithObject;
 import com.fizbiz.backend.services.InvestmentServiceImpl;
 import io.swagger.models.auth.In;
@@ -47,6 +48,13 @@ public class InvestmentController {
     public ResponseEntity<?> findAllInvestmentsOfAUser(@PathVariable Long id) throws FizbizException {
         List<Investment> investments = investmentService.findAllInvestmentOfAUser(id);
         return new ResponseEntity<>(investments, HttpStatus.OK);
+    }
+
+    @GetMapping("/status/{id}")
+    public ResponseEntity<?> changeInvestmentStatus(@PathVariable Long id) throws FizbizException {
+        investmentService.findInvestmentById(id);
+        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Your Investment has started successfully", HttpStatus.OK.toString());
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
 }

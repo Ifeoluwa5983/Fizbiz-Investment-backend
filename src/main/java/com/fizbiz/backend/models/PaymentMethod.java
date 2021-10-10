@@ -2,5 +2,5 @@ package com.fizbiz.backend.models;
 
 public enum PaymentMethod {
 
-    BitcoinFund, EthereumFund, TetherFund
+    BitcoinFund, EthereumFund, TetherFund, BankTransfer
 }

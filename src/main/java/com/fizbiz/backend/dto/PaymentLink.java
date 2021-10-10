@@ -8,4 +8,7 @@ public class PaymentLink {
     private String walletAddress;
 
     private String paymentMethod;
+    private Double initialCapital;
+    private String status;
+    private Double returns;
 }

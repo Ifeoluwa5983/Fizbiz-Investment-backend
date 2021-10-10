@@ -1,12 +1,14 @@
 package com.fizbiz.backend.models;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
@@ -33,12 +35,15 @@ public class Investment {
 
     private PaymentMethod paymentMethod;
 
-    private LocalDate investmentDate;
-
     private Status status;
 
+    @NotNull
     private Long userId;
 
-    private double returns;
+    private Double returns;
+
+    private LocalDate timeOfInvestment;
+
+    private String imageUrl;
 
 }
