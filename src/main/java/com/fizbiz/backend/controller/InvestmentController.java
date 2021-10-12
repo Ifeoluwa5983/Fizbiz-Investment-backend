@@ -4,6 +4,7 @@ import com.fizbiz.backend.dto.ChoosePaymentMethod;
 import com.fizbiz.backend.dto.PaymentLink;
 import com.fizbiz.backend.dto.StartInvestmentDto;
 import com.fizbiz.backend.exception.FizbizException;
+import com.fizbiz.backend.models.Account;
 import com.fizbiz.backend.models.Investment;
 import com.fizbiz.backend.response.ResponseDetails;
 import com.fizbiz.backend.response.ResponseDetailsWithObject;
@@ -51,8 +52,25 @@ public class InvestmentController {
     }
 
     @GetMapping("/status/{id}")
-    public ResponseEntity<?> changeInvestmentStatus(@PathVariable Long id) throws FizbizException {
-        investmentService.findInvestmentById(id);
+    public ResponseEntity<?> changeInvestmentStatus(@PathVariable Long id) {
+        investmentService.changeInvestmentStatus(id);
+        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Your Investment status has been changed successfully", HttpStatus.OK.toString());
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
+    }
+
+    @PostMapping("/optOut")
+    public ResponseEntity<?> optOut(@RequestBody Account account) throws FizbizException {
+        investmentService.optOut(account);
+        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Sit back for 48 hours, your money is on its way", HttpStatus.OK.toString());
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
+    }
+
+    @GetMapping("/returns/{id}")
+    public ResponseEntity<?> setTotalReturns(@PathVariable Long id) throws FizbizException {
+        if (id == null){
+            throw new FizbizException("Id cannot be null");
+        }
+        investmentService.setTotalReturns(id);
         ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Your Investment status has been changed successfully", HttpStatus.OK.toString());
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }

@@ -4,10 +4,8 @@ import com.fizbiz.backend.dto.ChoosePaymentMethod;
 import com.fizbiz.backend.dto.PaymentLink;
 import com.fizbiz.backend.dto.StartInvestmentDto;
 import com.fizbiz.backend.exception.FizbizException;
-import com.fizbiz.backend.models.Investment;
-import com.fizbiz.backend.models.InvestmentType;
-import com.fizbiz.backend.models.PaymentMethod;
-import com.fizbiz.backend.models.Status;
+import com.fizbiz.backend.models.*;
+import com.fizbiz.backend.repositories.AccountRepository;
 import com.fizbiz.backend.repositories.ApplicationUserRepository;
 import com.fizbiz.backend.repositories.InvestmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,9 @@ public class InvestmentServiceImpl implements InvestmentService {
 
     @Autowired
     ApplicationUserRepository applicationUserRepository;
+
+    @Autowired
+    AccountRepository accountRepository;
 
     @Override
     public PaymentLink startInvestment(Investment startInvestmentDto) throws FizbizException {
@@ -102,5 +103,26 @@ public class InvestmentServiceImpl implements InvestmentService {
         Investment investment = investmentRepository.findById(investmentId).get();
         investment.setStatus(Status.Active);
         investmentRepository.save(investment);
+    }
+
+    public void optOut(Account account) throws FizbizException {
+        Investment investment = investmentRepository.findById(account.getInvestmentId()).get();
+        if (LocalDate.now().equals(investment.getTimeOfInvestment().plusMonths(2))){
+            investment.setStatus(Status.Pending);
+            accountRepository.save(account);
+        }
+        else {
+            throw new FizbizException("Sorry, You can't opt out now");
+        }
+    }
+
+    public void setTotalReturns(Long investmentId) throws FizbizException {
+        Investment investment = investmentRepository.findById(investmentId).get();
+        if (LocalDate.now().equals(investment.getReturnDate().plusDays(30)) && investment.getStatus() == Status.Active){
+            investment.setTotalReturns(investment.getReturns() + investment.getTotalReturns());
+        }
+        else {
+            throw new FizbizException("Its too early for an added returns");
+        }
     }
 }

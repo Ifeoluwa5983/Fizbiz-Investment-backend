@@ -2,5 +2,5 @@ package com.fizbiz.backend.models;
 
 public enum Status {
 
-    Pending, Active;
+    Pending, Active,optOut;
 }
