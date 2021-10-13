@@ -96,7 +96,7 @@ public class ApplicationUserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping("user/")
+    @GetMapping("/")
 //    @PreAuthorize("hasAnyRole('ADMIN, SUPER_ADMIN')")
     public ResponseEntity<?> findAllUsers() {
         List<ApplicationUser> users = applicationUserService.findAllApplicationUsers();
