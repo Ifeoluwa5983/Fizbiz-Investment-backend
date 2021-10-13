@@ -50,6 +50,9 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
         if (user == null) {
             throw new FizbizException("Invalid request. Please try again later");
         }
+        if (applicationUserRepository.existsByEmailAddress(applicationUser.getEmailAddress())){
+            throw new FizbizException("User with that email exists already");
+        }
         user.setRole(Role.USER);
         user.setModifiedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")));
         user.setPassword(encryptPassword(applicationUser.getPassword()));
@@ -109,7 +112,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
 
     private void sendResetPasswordEmail(ApplicationUser applicationUser, String url) throws FizbizException {
         String toAddress = applicationUser.getEmailAddress();
-        String fromAddress = "iclasschima@gmail.com";
+        String fromAddress = "o.ifeoluwah@gmail.com";
         String senderName = "onHover";
         String subject = "Reset your password";
         String verifyURL = url + "/verify?token=" + applicationUser.getToken();

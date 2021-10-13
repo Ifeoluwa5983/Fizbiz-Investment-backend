@@ -125,4 +125,16 @@ public class InvestmentServiceImpl implements InvestmentService {
             throw new FizbizException("Its too early for an added returns");
         }
     }
+
+    public Double getOverallCapital(){
+        List<Investment> investments = investmentRepository.findAll();
+        Double capital = 0.0;
+        for (Investment investment: investments){
+            if (investment.getStatus() == Status.Active){
+                capital = capital + investment.getCapital();
+            }
+            System.out.println(capital);
+        }
+        return capital;
+    }
 }

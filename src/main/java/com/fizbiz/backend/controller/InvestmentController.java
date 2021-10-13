@@ -75,4 +75,11 @@ public class InvestmentController {
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
+    @GetMapping("/overallCapitals/")
+    public ResponseEntity<?> getOverallCapitals() {
+        Double capitals = investmentService.getOverallCapital();
+        ResponseDetailsWithObject responseDetails = new ResponseDetailsWithObject(LocalDateTime.now(), "Hurray!!",capitals, HttpStatus.OK.toString());
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
+    }
+
 }
