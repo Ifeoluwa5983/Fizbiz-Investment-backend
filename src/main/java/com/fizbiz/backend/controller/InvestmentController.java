@@ -1,15 +1,12 @@
 package com.fizbiz.backend.controller;
 
-import com.fizbiz.backend.dto.ChoosePaymentMethod;
 import com.fizbiz.backend.dto.PaymentLink;
-import com.fizbiz.backend.dto.StartInvestmentDto;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.models.Account;
 import com.fizbiz.backend.models.Investment;
 import com.fizbiz.backend.response.ResponseDetails;
 import com.fizbiz.backend.response.ResponseDetailsWithObject;
 import com.fizbiz.backend.services.InvestmentServiceImpl;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +35,7 @@ public class InvestmentController {
         Investment investment = investmentService.findInvestmentById(id);
         return new ResponseEntity<>(investment, HttpStatus.OK);
     }
+
 
     @GetMapping("/")
     public ResponseEntity<?> findAllInvestments() {

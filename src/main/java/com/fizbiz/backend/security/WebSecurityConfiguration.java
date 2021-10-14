@@ -33,6 +33,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors()
                 .configurationSource(corsConfigurationSource()).and().csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/api/investment/","/api/investment/status/{}","/api/investment/overallCapitals","/api/user/").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/user/register",
                         "/api/user/request-password-reset",
                         "/api/user/reset-password", "/api/user/verify").permitAll()

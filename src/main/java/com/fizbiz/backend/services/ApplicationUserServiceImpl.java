@@ -53,7 +53,12 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
         if (applicationUserRepository.existsByEmailAddress(applicationUser.getEmailAddress())){
             throw new FizbizException("User with that email exists already");
         }
-        user.setRole(Role.USER);
+        if (applicationUser.getRole() == null){
+            user.setRole(Role.USER);
+        }else {
+            user.setRole(applicationUser.getRole());
+        }
+
         user.setModifiedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")));
         user.setPassword(encryptPassword(applicationUser.getPassword()));
         user.setRegisteredDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")));
