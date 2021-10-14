@@ -118,7 +118,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
     private void sendResetPasswordEmail(ApplicationUser applicationUser, String url) throws FizbizException {
         String toAddress = applicationUser.getEmailAddress();
         String fromAddress = "o.ifeoluwah@gmail.com";
-        String senderName = "onHover";
+        String senderName = "Fikziz";
         String subject = "Reset your password";
         String verifyURL = url + "/verify?token=" + applicationUser.getToken();
 

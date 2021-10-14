@@ -12,8 +12,8 @@ public class EmailSenderServiceImpl implements NotificationService {
 
     private static final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
-    private final static String USERNAME = "support@fikziz.com";
-    private final static String PASSWORD = "fuC~G6=D1Q]y";
+    private final static String USERNAME = "so.ifeoluwah@gmail.com";
+    private final static String PASSWORD = "uwafe5983";
 
     @Override
     @Async
