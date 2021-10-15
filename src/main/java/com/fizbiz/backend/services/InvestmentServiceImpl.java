@@ -8,6 +8,7 @@ import com.fizbiz.backend.models.*;
 import com.fizbiz.backend.repositories.AccountRepository;
 import com.fizbiz.backend.repositories.ApplicationUserRepository;
 import com.fizbiz.backend.repositories.InvestmentRepository;
+import com.fizbiz.backend.repositories.WithdrawalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,9 @@ public class InvestmentServiceImpl implements InvestmentService {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    WithdrawalRepository withdrawalRepository;
 
     @Override
     public PaymentLink startInvestment(Investment startInvestmentDto) throws FizbizException {
@@ -113,6 +117,17 @@ public class InvestmentServiceImpl implements InvestmentService {
         }
         else {
             throw new FizbizException("Sorry, You can't opt out now");
+        }
+    }
+
+    public void withdrawal(Withdrawal withdrawal) throws FizbizException {
+        Investment investment = investmentRepository.findById(withdrawal.getInvestmentId()).get();
+        if (investment.getReturns() != 0.0){
+            investment.setStatus(Status.Pending);
+            withdrawalRepository.save(withdrawal);
+        }
+        else {
+            throw new FizbizException("Sorry, You can't withdraw now");
         }
     }
 

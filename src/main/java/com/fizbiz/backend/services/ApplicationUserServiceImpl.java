@@ -218,7 +218,7 @@ public class ApplicationUserServiceImpl implements ApplicationUserService{
     private void sendVerificationEmail(ApplicationUser applicationUser, String code, String siteURL) throws FizbizException {
 
         String toAddress = applicationUser.getEmailAddress();
-        String fromAddress = "o.ifeoluwah@gmail.com@gmail.com";
+        String fromAddress = "o.ifeoluwah@gmail.com";
         String senderName = "Fizbiz";
         String subject = "VERIFY YOUR EMAIL ADDRESS";
         String verifyURL = siteURL + "/verify?token=" + applicationUser.getToken();

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fizbiz.backend.dto.*;
 import com.fizbiz.backend.models.ApplicationUser;
 import com.fizbiz.backend.models.Gender;
+import com.fizbiz.backend.models.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ class ApplicationUserControllerTest {
     void testThatUserCanCanBeVerified () throws Exception {
 
         UserVerificationDto userVerificationDto = new UserVerificationDto();
-        userVerificationDto.setEmail("kolawoleolufemi9@gmail.com");
+        userVerificationDto.setEmail("bjayzee@gmail.com");
 
         this.mockMvc.perform(post("/api/user/verify")
                         .contentType("application/json")
@@ -52,10 +53,11 @@ class ApplicationUserControllerTest {
     @Test
     void testCreateApplicationUserEndpoint_thenReturnOK() throws Exception {
 
-        applicationUser.setFirstName("Ifeoluwa");
-        applicationUser.setLastName("Oluwafemi");
-        applicationUser.setToken("4596");
-        applicationUser.setGender(Gender.Female);
+        applicationUser.setFirstName("Bolaji");
+        applicationUser.setLastName("Adams");
+        applicationUser.setToken("6128");
+        applicationUser.setGender(Gender.Male);
+        applicationUser.setRole(Role.ADMIN);
         applicationUser.setPassword("password");
         applicationUser.setPhoneNumber("08098765432");
 
@@ -79,7 +81,7 @@ class ApplicationUserControllerTest {
 
     @Test
     void testThatWeCanFindAllUsers() throws Exception {
-        this.mockMvc.perform(get("/api/user/").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sd2FoQGdtYWlsLmNvbSIsImV4cCI6MTYyNTgyMjc2N30.0ZsEjXeYxTrfW4yF6qCU9ng8Qil4JCWOvcATo_HLDvIJnxKVQNZ81X-i72MV2fK_KNQBFthlV50idGLZc5EoMw"))
+        this.mockMvc.perform(get("/api/user/").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiamF5emVlQGdtYWlsLmNvbSIsImV4cCI6MTYzNTE1MzM0NH0.tYhXTwHy5xBLa6ULtRj_p-Quq8rIqN2toEBlfVWM2fqCBFsS-zO5Zu7bmrXkY9NgdoD9EBBDU_K02HV6HMf9Lg"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -174,7 +176,7 @@ class ApplicationUserControllerTest {
     void testThatUserCanLogIn () throws Exception {
         LoginDto loginDto = new LoginDto();
 
-        loginDto.setEmailAddress("kolawoleolufemi9@gmail.com");
+        loginDto.setEmailAddress("bjayzee@gmail.com");
         loginDto.setPassword("password");
 
         this.mockMvc.perform(post("/api/user/login")

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -97,7 +98,7 @@ public class ApplicationUserController {
     }
 
     @GetMapping("/")
-//    @PreAuthorize("hasAnyRole('ADMIN, SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> findAllUsers() {
         List<ApplicationUser> users = applicationUserService.findAllApplicationUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
