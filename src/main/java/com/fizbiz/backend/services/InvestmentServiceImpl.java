@@ -9,10 +9,13 @@ import com.fizbiz.backend.repositories.AccountRepository;
 import com.fizbiz.backend.repositories.ApplicationUserRepository;
 import com.fizbiz.backend.repositories.InvestmentRepository;
 import com.fizbiz.backend.repositories.WithdrawalRepository;
+import org.modelmapper.Conditions;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -151,5 +154,14 @@ public class InvestmentServiceImpl implements InvestmentService {
             System.out.println(capital);
         }
         return capital;
+    }
+    public void updateInvestment(Investment investment) throws FizbizException {
+        Investment investment1 = investmentRepository.findById(investment.getId()).get();
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+        mapper.map(investment, investment1);
+
+        investment1.setModifiedDate(LocalDate.now());
+        investmentRepository.save(investment1);
     }
 }

@@ -3,6 +3,7 @@ package com.fizbiz.backend.controller;
 import com.fizbiz.backend.dto.PaymentLink;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.models.Account;
+import com.fizbiz.backend.models.ApplicationUser;
 import com.fizbiz.backend.models.Investment;
 import com.fizbiz.backend.response.ResponseDetails;
 import com.fizbiz.backend.response.ResponseDetailsWithObject;
@@ -49,6 +50,16 @@ public class InvestmentController {
     public ResponseEntity<?> findAllInvestmentsOfAUser(@PathVariable Long id) throws FizbizException {
         List<Investment> investments = investmentService.findAllInvestmentOfAUser(id);
         return new ResponseEntity<>(investments, HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateInvestment(@Valid @RequestBody Investment investment) throws FizbizException {
+        if (investment.getId() == null) {
+            throw new FizbizException("User id cannot be null");
+        }
+        investmentService.updateInvestment(investment);
+        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Investment updated successfully", "success");
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
     @GetMapping("/status/{id}")

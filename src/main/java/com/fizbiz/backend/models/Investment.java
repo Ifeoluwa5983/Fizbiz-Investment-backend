@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @Entity
@@ -38,7 +39,6 @@ public class Investment {
 
     private Status status;
 
-    @NotNull
     private Long userId;
 
     private Double returns;
@@ -51,5 +51,5 @@ public class Investment {
 
     private Double totalReturns;
 
-
+    private LocalDate modifiedDate;
 }
