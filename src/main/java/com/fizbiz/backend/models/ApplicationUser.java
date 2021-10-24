@@ -38,6 +38,8 @@ public class ApplicationUser {
 
     private String emailAddress;
 
+    private String profilePicture;
+
     private String phoneNumber;
 
     private String password;

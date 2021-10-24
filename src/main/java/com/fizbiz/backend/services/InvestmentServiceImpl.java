@@ -1,8 +1,6 @@
 package com.fizbiz.backend.services;
 
-import com.fizbiz.backend.dto.ChoosePaymentMethod;
-import com.fizbiz.backend.dto.PaymentLink;
-import com.fizbiz.backend.dto.StartInvestmentDto;
+import com.fizbiz.backend.dto.*;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.models.*;
 import com.fizbiz.backend.repositories.AccountRepository;
@@ -12,6 +10,7 @@ import com.fizbiz.backend.repositories.WithdrawalRepository;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -144,17 +143,46 @@ public class InvestmentServiceImpl implements InvestmentService {
         }
     }
 
-    public Double getOverallCapital(){
+    public AdminList getInvestmentSummary(){
+        AdminList adminList = new AdminList();
+
         List<Investment> investments = investmentRepository.findAll();
         Double capital = 0.0;
+        Double returns = 0.0;
+        Double balance = 0.0;
         for (Investment investment: investments){
             if (investment.getStatus() == Status.Active){
+                ApplicationUser user = applicationUserRepository.findById(investment.getUserId()).get();
                 capital = capital + investment.getCapital();
+                returns = returns + investment.getTotalReturns();
+                balance = balance + user.getTotalBalance();
             }
             System.out.println(capital);
         }
-        return capital;
+        adminList.setOverallCapital(capital);
+        adminList.setOverallBalance(balance);
+        adminList.setOverallReturns(returns);
+        return adminList;
     }
+
+    public UserList getUserInvestmentSummary(Long userId){
+        ApplicationUser user = applicationUserRepository.findById(userId).get();
+        List<Investment> investments = investmentRepository.findAllByUserId(userId);
+        UserList userList = new UserList();
+        userList.setOverallBalance(user.getTotalBalance());
+        Double capital = 0.0;
+        Double returns = 0.0;
+        for (Investment investment: investments){
+            if (investment.getStatus() == Status.Active){
+                capital = capital + investment.getCapital();
+                returns = returns + investment.getTotalReturns();
+            }
+        }
+        userList.setOverallCapital(capital);
+        userList.setOverallReturns(returns);
+        return userList;
+    }
+
     public void updateInvestment(Investment investment) throws FizbizException {
         Investment investment1 = investmentRepository.findById(investment.getId()).get();
         ModelMapper mapper = new ModelMapper();

@@ -1,9 +1,10 @@
 package com.fizbiz.backend.controller;
 
+import com.fizbiz.backend.dto.AdminList;
 import com.fizbiz.backend.dto.PaymentLink;
+import com.fizbiz.backend.dto.UserList;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.models.Account;
-import com.fizbiz.backend.models.ApplicationUser;
 import com.fizbiz.backend.models.Investment;
 import com.fizbiz.backend.response.ResponseDetails;
 import com.fizbiz.backend.response.ResponseDetailsWithObject;
@@ -86,10 +87,17 @@ public class InvestmentController {
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
-    @GetMapping("/overallCapitals/")
-    public ResponseEntity<?> getOverallCapitals() {
-        Double capitals = investmentService.getOverallCapital();
-        ResponseDetailsWithObject responseDetails = new ResponseDetailsWithObject(LocalDateTime.now(), "Hurray!!",capitals, HttpStatus.OK.toString());
+    @GetMapping("/getInvestmentSummary/")
+    public ResponseEntity<?> getInvestmentSummary() {
+        AdminList adminList = investmentService.getInvestmentSummary();
+        ResponseDetailsWithObject responseDetails = new ResponseDetailsWithObject(LocalDateTime.now(), "Hurray!!",adminList, HttpStatus.OK.toString());
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
+    }
+
+    @GetMapping("/getUserInvestmentSummary/{userId}")
+    public ResponseEntity<?> getUserInvestmentSummary(@PathVariable Long userId) {
+        UserList userList = investmentService.getUserInvestmentSummary(userId);
+        ResponseDetailsWithObject responseDetails = new ResponseDetailsWithObject(LocalDateTime.now(), "Hurray!!",userList, HttpStatus.OK.toString());
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
