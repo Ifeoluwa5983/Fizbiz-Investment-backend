@@ -6,6 +6,7 @@ import com.fizbiz.backend.dto.UserList;
 import com.fizbiz.backend.exception.FizbizException;
 import com.fizbiz.backend.models.Account;
 import com.fizbiz.backend.models.Investment;
+import com.fizbiz.backend.models.Withdrawal;
 import com.fizbiz.backend.response.ResponseDetails;
 import com.fizbiz.backend.response.ResponseDetailsWithObject;
 import com.fizbiz.backend.services.InvestmentServiceImpl;
@@ -73,6 +74,13 @@ public class InvestmentController {
     @PostMapping("/optOut")
     public ResponseEntity<?> optOut(@RequestBody Account account) throws FizbizException {
         investmentService.optOut(account);
+        ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Sit back for 48 hours, your money is on its way", HttpStatus.OK.toString());
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
+    }
+
+    @PostMapping("/withdraw")
+    public ResponseEntity<?> withdrawal(@RequestBody Withdrawal withdrawal) throws FizbizException {
+        investmentService.withdrawal(withdrawal);
         ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Sit back for 48 hours, your money is on its way", HttpStatus.OK.toString());
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
