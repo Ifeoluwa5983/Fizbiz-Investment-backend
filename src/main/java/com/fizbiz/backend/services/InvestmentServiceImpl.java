@@ -122,10 +122,10 @@ public class InvestmentServiceImpl implements InvestmentService {
         }
     }
 
-    public void withdrawal(Withdrawal withdrawal) throws FizbizException {
+    public void withdraw(Withdrawal withdrawal) throws FizbizException {
         Investment investment = investmentRepository.findById(withdrawal.getInvestmentId()).get();
         if (investment.getReturns() != 0.0){
-            investment.setStatus(Status.Pending);
+            withdrawal.setStatus(WithdrawalStatus.wPending);
             withdrawalRepository.save(withdrawal);
         }
         else {

@@ -38,4 +38,6 @@ public class Withdrawal {
 
     @NotNull
     private String bankName;
+
+    private WithdrawalStatus status;
 }

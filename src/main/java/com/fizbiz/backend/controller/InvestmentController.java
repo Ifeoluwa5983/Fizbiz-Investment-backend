@@ -80,7 +80,7 @@ public class InvestmentController {
 
     @PostMapping("/withdraw")
     public ResponseEntity<?> withdrawal(@RequestBody Withdrawal withdrawal) throws FizbizException {
-        investmentService.withdrawal(withdrawal);
+        investmentService.withdraw(withdrawal);
         ResponseDetails responseDetails = new ResponseDetails(LocalDateTime.now(), "Sit back for 48 hours, your money is on its way", HttpStatus.OK.toString());
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
