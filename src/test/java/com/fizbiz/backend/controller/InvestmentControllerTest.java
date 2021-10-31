@@ -37,13 +37,12 @@ class InvestmentControllerTest {
     void startInvestment() throws Exception {
 
         Investment investment = new Investment();
-        investment.setCapital(1000);
+        investment.setCapital(5000.0);
         investment.setPaymentMethod(PaymentMethod.TetherFund);
-        investment.setUserId(3L);
-//        startInvestmentDto.setUserId("60eec28ec03c0d09ba81426b");
+        investment.setUserId(2L);
 
         this.mockMvc.perform(post("/api/investment/startInvestment")
-                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrb2xhd29sZW9sdWZlbWk5QGdtYWlsLmNvbSIsImV4cCI6MTYzNDc2ODgyOH0.LcIqvyp4HzTe0yQ66JDOpK6n-FZ5jsboQpTNHbR7FeM4e8aCBs6A6jqN6WR04vd9fIcg2K4lKfeC8c-r73TG5A")
+                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiamF5emVlQGdtYWlsLmNvbSIsImV4cCI6MTYzNjUzNTA0N30.8K-pj13ZmfIy-aWftj_F-mbT0QU3gW9PtJ7ljr9qJSdTdAkovIf0zg0YFUb79sxhLAvMHxYU-SULjgBf4scl-g\"")
                 .contentType("application/json")
                 .content(mapper.writeValueAsString(investment)))
                 .andExpect(status().isOk())
@@ -55,7 +54,16 @@ class InvestmentControllerTest {
     @Test
     void findInvestmentById() throws Exception {
         this.mockMvc.perform(get("/api/investment/1")
-                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrb2xhd29sZW9sdWZlbWk5QGdtYWlsLmNvbSIsImV4cCI6MTYzNDc2ODgyOH0.LcIqvyp4HzTe0yQ66JDOpK6n-FZ5jsboQpTNHbR7FeM4e8aCBs6A6jqN6WR04vd9fIcg2K4lKfeC8c-r73TG5A"))
+                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiamF5emVlQGdtYWlsLmNvbSIsImV4cCI6MTYzNjUzNTA0N30.8K-pj13ZmfIy-aWftj_F-mbT0QU3gW9PtJ7ljr9qJSdTdAkovIf0zg0YFUb79sxhLAvMHxYU-SULjgBf4scl-g"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    void findUserInvestmentSummary() throws Exception {
+        this.mockMvc.perform(get("/api/investment/getUserInvestmentSummary/2")
+                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiamF5emVlQGdtYWlsLmNvbSIsImV4cCI6MTYzNjUzNTA0N30.8K-pj13ZmfIy-aWftj_F-mbT0QU3gW9PtJ7ljr9qJSdTdAkovIf0zg0YFUb79sxhLAvMHxYU-SULjgBf4scl-g"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -63,8 +71,8 @@ class InvestmentControllerTest {
 
     @Test
     void changeInvestmentStatus() throws Exception {
-        this.mockMvc.perform(get("/api/investment/status/1")
-                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrb2xhd29sZW9sdWZlbWk5QGdtYWlsLmNvbSIsImV4cCI6MTYzNDc2ODgyOH0.LcIqvyp4HzTe0yQ66JDOpK6n-FZ5jsboQpTNHbR7FeM4e8aCBs6A6jqN6WR04vd9fIcg2K4lKfeC8c-r73TG5A"))
+        this.mockMvc.perform(get("/api/investment/status/8")
+                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiamF5emVlQGdtYWlsLmNvbSIsImV4cCI6MTYzNjUzNTA0N30.8K-pj13ZmfIy-aWftj_F-mbT0QU3gW9PtJ7ljr9qJSdTdAkovIf0zg0YFUb79sxhLAvMHxYU-SULjgBf4scl-g"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -73,7 +81,7 @@ class InvestmentControllerTest {
     @Test
     void findAllInvestments() throws Exception {
 
-        this.mockMvc.perform(get("/api/investment/").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrb2xhd29sZW9sdWZlbWk5QGdtYWlsLmNvbSIsImV4cCI6MTYzNDc2ODgyOH0.LcIqvyp4HzTe0yQ66JDOpK6n-FZ5jsboQpTNHbR7FeM4e8aCBs6A6jqN6WR04vd9fIcg2K4lKfeC8c-r73TG5A"))
+        this.mockMvc.perform(get("/api/investment/").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiamF5emVlQGdtYWlsLmNvbSIsImV4cCI6MTYzNjUzNTA0N30.8K-pj13ZmfIy-aWftj_F-mbT0QU3gW9PtJ7ljr9qJSdTdAkovIf0zg0YFUb79sxhLAvMHxYU-SULjgBf4scl-g"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -82,7 +90,7 @@ class InvestmentControllerTest {
     @Test
     void findAllInvestmentsOfAUser() throws Exception {
         this.mockMvc.perform(get("/api/investment/findAllInvestmentsOfAUser/3")
-                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrb2xhd29sZW9sdWZlbWk5QGdtYWlsLmNvbSIsImV4cCI6MTYzNDc2ODgyOH0.LcIqvyp4HzTe0yQ66JDOpK6n-FZ5jsboQpTNHbR7FeM4e8aCBs6A6jqN6WR04vd9fIcg2K4lKfeC8c-r73TG5A"))
+                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiamF5emVlQGdtYWlsLmNvbSIsImV4cCI6MTYzNjUzNTA0N30.8K-pj13ZmfIy-aWftj_F-mbT0QU3gW9PtJ7ljr9qJSdTdAkovIf0zg0YFUb79sxhLAvMHxYU-SULjgBf4scl-g"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();

@@ -7,6 +7,7 @@ import com.fizbiz.backend.repositories.AccountRepository;
 import com.fizbiz.backend.repositories.ApplicationUserRepository;
 import com.fizbiz.backend.repositories.InvestmentRepository;
 import com.fizbiz.backend.repositories.WithdrawalRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Slf4j
 public class InvestmentServiceImpl implements InvestmentService {
 
     @Autowired
@@ -43,6 +45,7 @@ public class InvestmentServiceImpl implements InvestmentService {
         investment.setUserId(startInvestmentDto.getUserId());
         investment.setTimeOfInvestment(LocalDate.now());
         investment.setStatus(Status.Pending);
+        investment.setTotalReturns(0.0);
         if (startInvestmentDto.getPaymentMethod() == PaymentMethod.valueOf(PaymentMethod.BitcoinFund.toString())){
             paymentLink.setWalletAddress("1AFRpuX51yMjbNrstJ92k1nYj4YJcYeixo");
             investment.setPaymentMethod(startInvestmentDto.getPaymentMethod());
@@ -143,10 +146,12 @@ public class InvestmentServiceImpl implements InvestmentService {
         }
     }
 
-    public AdminList getInvestmentSummary(){
+    public AdminList getInvestmentSummary() throws FizbizException {
         AdminList adminList = new AdminList();
-
         List<Investment> investments = investmentRepository.findAll();
+        if (investments == null){
+            throw new FizbizException("No investment has been made yet");
+        }
         Double capital = 0.0;
         Double returns = 0.0;
         Double balance = 0.0;
@@ -165,21 +170,32 @@ public class InvestmentServiceImpl implements InvestmentService {
         return adminList;
     }
 
-    public UserList getUserInvestmentSummary(Long userId){
+    public UserList getUserInvestmentSummary(Long userId) throws FizbizException {
         ApplicationUser user = applicationUserRepository.findById(userId).get();
+//        log.info("User -> {}", user);
         List<Investment> investments = investmentRepository.findAllByUserId(userId);
+//        log.info("Investments -> {}", investments);
+        System.out.println(investments);
+        if (investments == null){
+            throw new FizbizException("This user does not have an investment");
+        }
         UserList userList = new UserList();
         userList.setOverallBalance(user.getTotalBalance());
         Double capital = 0.0;
-        Double returns = 0.0;
+        Double userReturns = 0.0;
+
         for (Investment investment: investments){
+            log.info("Investment ->{Active}");
             if (investment.getStatus() == Status.Active){
                 capital = capital + investment.getCapital();
-                returns = returns + investment.getTotalReturns();
+                userReturns = userReturns + investment.getTotalReturns();
+                log.info("Investments -> {}", investment.getTotalReturns());
             }
         }
         userList.setOverallCapital(capital);
-        userList.setOverallReturns(returns);
+        userList.setOverallReturns(userReturns);
+
+
         return userList;
     }
 

@@ -81,7 +81,7 @@ class ApplicationUserControllerTest {
 
     @Test
     void testThatWeCanFindAllUsers() throws Exception {
-        this.mockMvc.perform(get("/api/user/").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiamF5emVlQGdtYWlsLmNvbSIsImV4cCI6MTYzNTE1MzM0NH0.tYhXTwHy5xBLa6ULtRj_p-Quq8rIqN2toEBlfVWM2fqCBFsS-zO5Zu7bmrXkY9NgdoD9EBBDU_K02HV6HMf9Lg"))
+        this.mockMvc.perform(get("/api/user/").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiamF5emVlQGdtYWlsLmNvbSIsImV4cCI6MTYzNjUzNTA0N30.8K-pj13ZmfIy-aWftj_F-mbT0QU3gW9PtJ7ljr9qJSdTdAkovIf0zg0YFUb79sxhLAvMHxYU-SULjgBf4scl-g"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -105,12 +105,13 @@ class ApplicationUserControllerTest {
     @Test
     void testThatWeCanCallUpdateUserEndpoint() throws Exception {
         ApplicationUser updateProcurementPartyDto = new ApplicationUser();
-        updateProcurementPartyDto.setId(1L);
-        updateProcurementPartyDto.setGender(Gender.Male);
-        updateProcurementPartyDto.setDateOfBirth(LocalDate.of(2003, 02, 02));
+        updateProcurementPartyDto.setId(4L);
+        updateProcurementPartyDto.setFirstName("Iclass");
+        updateProcurementPartyDto.setLastName("Chima");
+        updateProcurementPartyDto.setEmailAddress("iclasschima@gmail.com");
 
         this.mockMvc.perform(put("/api/user/update")
-                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvLmlmZW9sdXdhaEBnbWFpbC5jb20iLCJleHAiOjE2MzAxNTcyMTJ9.h_1Szcu1B54hYrvQeIVhdCHUeGe8LUMD06MkIi_IIPiE8o1zGotCUYMJ10X26psKydlAdX3YXk8xfUfUyg3ZyQ")
+                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiamF5emVlQGdtYWlsLmNvbSIsImV4cCI6MTYzNjUzNTA0N30.8K-pj13ZmfIy-aWftj_F-mbT0QU3gW9PtJ7ljr9qJSdTdAkovIf0zg0YFUb79sxhLAvMHxYU-SULjgBf4scl-g")
                 .contentType("application/json")
                 .content(mapper.writeValueAsString(updateProcurementPartyDto)))
                 .andDo(print())

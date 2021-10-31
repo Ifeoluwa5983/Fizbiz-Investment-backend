@@ -96,14 +96,14 @@ public class InvestmentController {
     }
 
     @GetMapping("/getInvestmentSummary/")
-    public ResponseEntity<?> getInvestmentSummary() {
+    public ResponseEntity<?> getInvestmentSummary() throws FizbizException {
         AdminList adminList = investmentService.getInvestmentSummary();
         ResponseDetailsWithObject responseDetails = new ResponseDetailsWithObject(LocalDateTime.now(), "Hurray!!",adminList, HttpStatus.OK.toString());
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 
     @GetMapping("/getUserInvestmentSummary/{userId}")
-    public ResponseEntity<?> getUserInvestmentSummary(@PathVariable Long userId) {
+    public ResponseEntity<?> getUserInvestmentSummary(@PathVariable Long userId) throws FizbizException {
         UserList userList = investmentService.getUserInvestmentSummary(userId);
         ResponseDetailsWithObject responseDetails = new ResponseDetailsWithObject(LocalDateTime.now(), "Hurray!!",userList, HttpStatus.OK.toString());
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);

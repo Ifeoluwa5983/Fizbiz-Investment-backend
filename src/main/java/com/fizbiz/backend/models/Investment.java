@@ -31,7 +31,7 @@ public class Investment {
     )
     private Long id;
 
-    private double capital;
+    private Double capital;
 
     private InvestmentType investmentType;
 
